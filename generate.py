@@ -139,6 +139,12 @@ def main():
             write(OUTPUT / asset, src.read_text(encoding="utf-8"))
             print(f"  {asset}")
 
+    # Copy the custom domain file so GitHub Pages serves runamile.co.uk.
+    cname = ROOT / "CNAME"
+    if cname.exists():
+        write(OUTPUT / "CNAME", cname.read_text(encoding="utf-8"))
+        print("  CNAME")
+
     print(f"\nDone — {len(PAGES)} pages + {len(posts)} posts written to {OUTPUT}/")
 
 
