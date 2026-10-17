@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} &middot; {{ site.title }}{% endblock %}
+{% block og_title %}{{ post.title }}{% endblock %}
+{% block og_type %}article{% endblock %}
+
+{% block content %}
+<article class="post">
+  <header>
+    <a class="back" href="../blog.html">&larr; All posts</a>
+    <h1>{{ post.title }}</h1>
+    <time datetime="{{ post.date.strftime('%Y-%m-%d') }}">{{ post.date.strftime('%d %B %Y') }}</time>
+  </header>
+
+  <div class="post-body">
+    {{ post.body | markdown }}
+  </div>
+
+  <nav class="post-nav">
+    {% if newer %}<a class="newer" href="../{{ newer.slug }}/index.html">&larr; {{ newer.title }}</a>{% endif %}
+    {% if older %}<a class="older" href="../{{ older.slug }}/index.html">{{ older.title }} &rarr;</a>{% endif %}
+  </nav>
+</article>
+{% endblock %}

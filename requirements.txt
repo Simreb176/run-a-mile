@@ -1,0 +1,5 @@
+PyYAML>=6.0
+Jinja2>=3.0
+# Optional: enables full Markdown (**bold**, *italic*, [links](...), headings)
+# in post bodies. Without it, posts are still rendered as plain paragraphs.
+Markdown>=3.4

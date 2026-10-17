@@ -1,0 +1,168 @@
+:root {
+  --bg: #fdf9f4;
+  --surface: #ffffff;
+  --border: #e8dfd3;
+  --text: #2c241d;
+  --text-dim: #7a6c5d;
+  --accent: #c2410c;
+  --accent-soft: #ffedd5;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Header */
+.site-header {
+  border-bottom: 1px solid var(--border);
+  padding: 18px 0;
+}
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.brand {
+  font-weight: bold;
+  font-size: 1.25rem;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+.site-header nav { display: flex; gap: 18px; }
+.site-header nav a { color: var(--text-dim); font-size: 0.95rem; }
+.site-header nav a:hover { color: var(--accent); }
+
+main { padding: 36px 20px 60px; }
+
+h1, h2, h3 { font-weight: normal; line-height: 1.25; }
+h1 { font-size: 1.9rem; margin-bottom: 20px; }
+h2 { font-size: 1.3rem; margin: 36px 0 14px; }
+h3 { font-size: 1.05rem; }
+
+/* Hero */
+.hero { margin-bottom: 28px; }
+.hero h1 { font-size: 2.4rem; margin-bottom: 4px; }
+.tagline { color: var(--text-dim); font-style: italic; margin-bottom: 14px; }
+.intro { color: var(--text-dim); }
+
+/* Goal */
+.goal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px 20px;
+  margin: 28px 0;
+}
+.goal h2 { margin: 0 0 10px; font-size: 1rem; color: var(--text-dim); }
+.progress {
+  height: 10px;
+  background: var(--accent-soft);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+}
+.progress-label { font-size: 0.85rem; color: var(--text-dim); margin-top: 8px; }
+
+/* Stats */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  margin: 28px 0;
+}
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
+}
+.stat-value { display: block; font-size: 1.5rem; color: var(--accent); }
+.stat-label { font-size: 0.8rem; color: var(--text-dim); }
+
+/* Post summaries */
+.post-summary {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.post-summary time { font-size: 0.8rem; color: var(--text-dim); }
+.post-summary h3 { margin: 4px 0 6px; font-size: 1.1rem; }
+.post-summary p { color: var(--text-dim); font-size: 0.95rem; }
+.post-summary h2 { margin: 2px 0 6px; font-size: 1.2rem; }
+.more { margin-top: 14px; font-size: 0.95rem; }
+
+/* Tables (training log) */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  margin: 8px 0;
+}
+th, td {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+}
+th {
+  font-weight: normal;
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+tr:last-child td { border-bottom: none; }
+
+/* Single post */
+.post header { margin-bottom: 22px; }
+.back { font-size: 0.85rem; color: var(--text-dim); display: inline-block; margin-bottom: 10px; }
+.post time { font-size: 0.85rem; color: var(--text-dim); }
+.post-body p { margin-bottom: 16px; }
+.post-body strong { color: var(--accent); }
+.post-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 36px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+/* About */
+.about h2 { margin-top: 0; }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+@media (max-width: 560px) {
+  .hero h1 { font-size: 1.9rem; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  th:nth-child(4), td:nth-child(4) { display: none; }
+}

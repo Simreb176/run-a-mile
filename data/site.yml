@@ -1,0 +1,27 @@
+# Site-wide settings.
+# Anything your dad wants to change site-wide lives here (title, description,
+# contact details, social links, and the SEO block used for search engines).
+
+title: Run A Mile
+description: One man's return to running — the story, the training log, and the miles.
+
+# The public URL once the custom domain is attached (runamile.co.uk).
+# Used for SEO tags and sharing cards.
+url: https://runamile.co.uk
+
+author:
+  name: Your Dad
+  # Short line shown under the site title.
+  tagline: Documenting my return to running, one mile at a time.
+  location: Nottingham, UK
+  email: you@example.com
+
+# Social links. Leave a value empty and it simply won't be linked.
+social:
+  github:
+  strava:
+  twitter:
+
+# Search engine / sharing description. Update this when the story changes.
+seo:
+  description: "A blog and training log documenting a return to running — from the first hesitant mile to the first finish line."

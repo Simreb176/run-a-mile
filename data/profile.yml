@@ -1,0 +1,30 @@
+# About the runner and the goal.
+# This is the "hello world" content — real text will replace it soon.
+
+name: Your Dad
+tagline: "Getting back to running, one mile at a time."
+location: Nottingham, UK
+
+# Shown on the home page hero and the about page.
+intro: >
+  After years away from the road, I'm lacing up my trainers again. This site
+  documents the comeback — the early mornings, the sore legs, the slow wins —
+  and everything I learn along the way.
+
+# Your target. `progress` is a percentage (0-100) used for the goal bar on the
+# home page. Update it as you go.
+goal:
+  label: First 5K
+  target: 5K
+  progress: 35
+
+# Fun facts / quick stats shown on the home page.
+stats:
+  - label: Weeks back
+    value: 6
+  - label: Longest run
+    value: "3.2 km"
+  - label: Runs completed
+    value: 18
+  - label: Coffees earned
+    value: 18

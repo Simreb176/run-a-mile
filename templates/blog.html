@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Blog &amp; Training Log &middot; {{ site.title }}{% endblock %}
+
+{% block content %}
+<h1>Blog</h1>
+
+<section class="post-list">
+  {% for post in posts %}
+  <article class="post-summary">
+    <time datetime="{{ post.date.strftime('%Y-%m-%d') }}">{{ post.date.strftime('%d %b %Y') }}</time>
+    <h2><a href="posts/{{ post.slug }}/index.html">{{ post.title }}</a></h2>
+    <p>{{ post.excerpt }}</p>
+  </article>
+  {% else %}
+  <p>No posts yet — check back soon.</p>
+  {% endfor %}
+</section>
+
+<h1>Training log</h1>
+<section class="training-log">
+  <table>
+    <thead>
+      <tr><th>Date</th><th>Distance</th><th>Time</th><th>Pace</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      {% for run in training %}
+      <tr>
+        <td>{{ run.date }}</td>
+        <td>{{ run.distance }}</td>
+        <td>{{ run.duration }}</td>
+        <td>{{ run.pace or '—' }}</td>
+        <td>{{ run.notes or '—' }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5">No runs logged yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}
