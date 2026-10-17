@@ -46,6 +46,8 @@ A few rules that keep things working:
 - **`slug`** is the part of the web address people will see. Lowercase, use
   hyphens instead of spaces, and don't reuse a slug you've already used.
 - **`date`** must be in `YYYY-MM-DD` form.
+- **Quote any time value** (like `"32:15"`). Without the quotes, YAML thinks
+  a time such as `21:40` is a maths sum and turns it into a number.
 
 ## Logging a run
 
@@ -54,7 +56,7 @@ Open `data/training.yml` and add a line at the top:
 ```yaml
 - date: 2026-10-20
   distance: 5.0 km
-  duration: 32:15
+  duration: "32:15"       # keep the quotes — times like 32:15 need them
   pace: 6:27 /km
   notes: Felt great today.
 ```
