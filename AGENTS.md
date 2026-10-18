@@ -65,14 +65,19 @@ git commit -m "Short description of what changed"
 git push origin main
 ```
 
-Within a minute or two the change is live at runamile.co.uk. To confirm:
+Within a minute or two the change is live at runamile.co.uk. To confirm, give
+it a moment and fetch the live page, then check that your change is present:
 
 ```bash
-gh run list --limit 3          # the newest run should end in success
+curl -s https://runamile.co.uk/ | grep -i "something you just added"
 ```
 
-If a run fails, open it (`gh run view --log-failed`) — the usual cause is a
-YAML typo in `data/`, and the error names the file and line.
+The build runs on GitHub, so it takes ~1 minute to appear. You can watch runs
+at https://github.com/Simreb176/run-a-mile/actions (or with `gh run list`, if
+the `gh` CLI happens to be installed — it is not required).
+
+If a run fails, the usual cause is a YAML typo in `data/`; the build log names
+the file and line. Fix it, commit and push again.
 
 > First-time setup already done: the repo exists, Pages is set to
 > **GitHub Actions**, the `CNAME` file points at `runamile.co.uk`, and DNS is
@@ -142,4 +147,5 @@ He is the ideas person; you are the hands. Keep these habits:
 3. Links and stylesheet resolve on **post pages** (they live at
    `/posts/<slug>/`, so every link must be prefixed with `base`).
 4. `EDITING.md` updated if you changed anything the owner can now edit.
-5. Committed and pushed, and `gh run list` shows a green run.
+5. Committed and pushed, and the live site (or the Actions page) shows the
+   change within a minute or two.
