@@ -1,32 +1,54 @@
-# Editing this site — a plain-English guide
+# Editing this site — the plain-English guide
 
-This site is built from simple text files. You almost never need to touch any
-code. Here's the short version:
+Welcome. This is your site: **runamile.co.uk**. This guide explains how to
+change it. There is no software to learn and nothing to install — you describe
+what you want, it gets done, and it appears online.
 
-**Your content lives in the `data/` folder.** Each file is a list of
-information written in YAML — a very readable format that looks like this:
+## The easy way: just ask
 
-```yaml
-- title: My First Run
-  date: 2026-10-20
+You don't have to touch anything yourself. Open your AI assistant in this
+folder and tell it what you'd like, in your own words:
+
+> "Add a post about this morning's run."
+> "Log today: 4 km in 26 minutes, felt tired."
+> "I don't like the orange — try a deep green."
+> "Put a photo of the park at the top of the home page."
+
+The assistant edits the files, rebuilds the site, and gives you a link to look
+at. When you're happy, it publishes it. **You never have to run a command or
+edit a file.** The rest of this guide is for when you're curious about what's
+under the bonnet, or want to do a small edit by hand.
+
+Whatever happens, remember the golden rule: **nothing goes live until the
+assistant pushes it.** You can always look first, and nothing can be broken for
+real because every version is saved.
+
+## How the site is put together
+
+```
+data/       ← your words: posts, runs, your profile, site settings
+templates/  ← the page layouts (the "skeleton" of each page)
+styles.css  ← the look: colours, fonts, spacing
+generate.py ← builds the website from the three things above
+docs/       ← the finished website (built automatically — don't edit this)
 ```
 
-A colon separates a **label** from its **value**. Indentation matters: items
-that line up belong together. When in doubt, copy the shape of what's already
-there.
+You'll mostly live in `data/`. Everything in those files is written in **YAML**,
+which is just lists of `label: value` pairs. Indentation matters — items that
+line up belong together. When in doubt, copy the shape of the block above.
 
-## The four content files
+### The four content files
 
 | File | What it holds |
 |------|---------------|
 | `data/posts.yml` | Your blog posts (newest at the top) |
-| `data/training.yml` | Your running log — one line per run |
-| `data/profile.yml` | Your name, your goal, and the stats on the home page |
-| `data/site.yml` | The site title, description and contact email |
+| `data/training.yml` | Your running log — one entry per run |
+| `data/profile.yml` | Your name, tagline, story, goal and home-page stats |
+| `data/site.yml` | The site title, description, contact email and social links |
 
 ## Writing a blog post
 
-Open `data/posts.yml` and add a new block at the **top** of the list:
+Add a new block at the **top** of the list in `data/posts.yml`:
 
 ```yaml
 - date: 2026-10-20
@@ -39,19 +61,22 @@ Open `data/posts.yml` and add a new block at the **top** of the list:
     or *italic*, and add [links](https://example.com) like this.
 ```
 
+You can also add headings (`## A smaller heading`), bullet lists (`- like
+this`), and quotes (`> like this`) inside `body`.
+
 A few rules that keep things working:
 
 - **Keep the dashes and indentation.** Every post starts with `- ` and each
   line under it is indented the same amount.
-- **`slug`** is the part of the web address people will see. Lowercase, use
-  hyphens instead of spaces, and don't reuse a slug you've already used.
+- **`slug`** is the end of the web address people will see. Lowercase, use
+  hyphens instead of spaces, and never reuse one.
 - **`date`** must be in `YYYY-MM-DD` form.
-- **Quote any time value** (like `"32:15"`). Without the quotes, YAML thinks
-  a time such as `21:40` is a maths sum and turns it into a number.
+- **Quote any time value** (like `"32:15"`). Without the quotes, YAML thinks a
+  time such as `21:40` is a maths sum and turns it into a number.
 
 ## Logging a run
 
-Open `data/training.yml` and add a line at the top:
+Add one entry at the top of `data/training.yml`:
 
 ```yaml
 - date: 2026-10-20
@@ -61,39 +86,87 @@ Open `data/training.yml` and add a line at the top:
   notes: Felt great today.
 ```
 
-The `pace` and `notes` lines are optional — just leave them out if you like.
+`pace` and `notes` are optional — leave them out if you like.
 
-## Changing your goal or the home-page stats
+## Changing your story, goal or stats
 
-Open `data/profile.yml`. The `goal` section has a `progress` number
-(a percentage from 0 to 100) — update it as you get closer. The `stats` list
-is the row of numbers on the home page; edit the values or add your own.
+Open `data/profile.yml`:
 
-## Seeing your changes
+- **`name`**, **`tagline`**, **`location`** and **`intro`** are the words at the
+  top of the home page and the whole About page.
+- **`goal`** drives the progress bar. `progress` is a percentage from 0 to 100 —
+  nudge it up as you get closer.
+- **`stats`** is the row of numbers on the home page. Edit the values or add
+  your own; each one is a `label` and a `value`.
 
-After editing any file, the site needs to be **rebuilt**. From a terminal in
-this folder:
+## Changing how the site looks
 
-```bash
-.venv/bin/python serve.py
-```
+The design lives in two places, both editable in plain English:
 
-That rebuilds the site and shows it at:
+- **`styles.css`** — the colours, fonts and spacing. Section 1 at the top of the
+  file holds every colour in one list, so a single edit there restyles the whole
+  site. For example, changing the line starting `--accent:` changes every
+  button, link and highlight at once.
+- **`templates/`** — the layout of each page. `base.html` is the header and
+  footer that appear everywhere; `index.html` is the home page; `blog.html` is
+  the list of posts and the training log; `post.html` is the page for a single
+  post; `about.html` is the About page.
 
-- http://192.168.1.124:8083 — on your home network
-- http://dev.rebecchi.uk:8083 — over the tailnet
+The site also switches to a **dark theme** automatically for visitors whose
+phone or computer is set to dark mode, and adapts to phones and tablets on its
+own.
 
-Press `Ctrl+C` in the terminal to stop it.
+You can ask the assistant for things like a photo banner at the top, different
+fonts, a new page (a "Races" page, a "Kit" page, a photo gallery), automatic
+monthly mileage totals, or a contact form — none of it is a big job.
+
+## Seeing your changes — the development version
+
+Before anything goes live you can look at a **development version**. Ask the
+assistant to start the preview, then open:
+
+**http://simon.rebecchi.uk:8080**
+
+That's your work-in-progress. Nothing here is public and nothing here affects
+the real site. When you've looked and you're happy, tell the assistant and it
+publishes.
+
+(If you ever want to stop the preview, just say so — or press `Ctrl+C` in the
+terminal window that's running it.)
 
 ## Publishing to the internet
 
-Once this code is on GitHub, every time you **push to `main`** the site
-rebuilds and republishes itself automatically. You don't run anything special
-— just commit and push after rebuilding.
+Your **live site is https://runamile.co.uk**. There's no button to press and
+no settings to change: when the assistant sends your changes up, the live site
+rebuilds itself automatically and updates within a minute or two.
+
+To double-check it worked, just visit **https://runamile.co.uk** — or open it on
+your phone. If you're not sure, ask the assistant to confirm the upload
+succeeded.
+
+## What's possible
+
+You're not limited to what's here today. Some things people ask for:
+
+- **Posts:** headings, quotes, photo galleries, embedded videos, tags.
+- **The log:** automatic totals ("72 km this month"), pace trends, a yearly
+  summary, filters by distance.
+- **Pages:** Races & results, Kit I use, Routes, an FAQ, a newsletter sign-up.
+- **Appearance:** a photo across the top, a new colour scheme, different fonts,
+  a wider or narrower page, rounded or square corners.
+- **Sharing:** a nice preview card when someone pastes your link into WhatsApp
+  or Facebook, and better text for Google.
+
+Just describe it. If it can be built, the assistant will build it and show you.
 
 ## If something breaks
 
-The most common mistake is indentation — a line that's indented differently
-from its neighbours. Compare your new block against the one above it and make
-the spacing match. If a build fails, the error message will usually name the
-file and line number.
+Don't panic — nothing is lost. The most common mistake is indentation: a line
+that's spaced differently from the lines above it. Compare your new block with
+the one above and make the spacing match. Then ask the assistant:
+
+> "The site didn't build — can you find and fix the mistake and show me again?"
+
+The build error will usually name the file and line, and the assistant can put
+it right in seconds. Every previous version is saved, so anything can be
+restored.
