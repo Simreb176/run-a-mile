@@ -72,9 +72,21 @@ it a moment and fetch the live page, then check that your change is present:
 curl -s https://runamile.co.uk/ | grep -i "something you just added"
 ```
 
-The build runs on GitHub, so it takes ~1 minute to appear. You can watch runs
-at https://github.com/Simreb176/run-a-mile/actions (or with `gh run list`, if
-the `gh` CLI happens to be installed — it is not required).
+The build runs on GitHub, so it takes ~1 minute to appear.
+
+You can check the deploy **without any credentials** — the repo is public, so
+the Actions API is readable anonymously:
+
+```bash
+curl -s "https://api.github.com/repos/Simreb176/run-a-mile/actions/runs?per_page=1" \
+  | grep -o '"conclusion": *"[a-z]*"'
+# "conclusion": "success"
+```
+
+Runs are also browsable at https://github.com/Simreb176/run-a-mile/actions.
+**Do not install the `gh` CLI or store a GitHub token just for this** — a token
+grants far broader access than deploy checks need. If `gh` is ever wanted for
+issues or PRs, use a fine-grained, read-only token scoped to this one repo.
 
 If a run fails, the usual cause is a YAML typo in `data/`; the build log names
 the file and line. Fix it, commit and push again.
