@@ -2,38 +2,96 @@
 <html lang="en-GB">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{{ site.title }}{% endblock %}</title>
   <meta name="description" content="{% block description %}{{ site.seo.description }}{% endblock %}">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#fdf9f4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#14110e" media="(prefers-color-scheme: dark)">
 
   <meta property="og:title" content="{% block og_title %}{{ site.title }}{% endblock %}">
   <meta property="og:description" content="{% block og_description %}{{ site.seo.description }}{% endblock %}">
   <meta property="og:type" content="{% block og_type %}website{% endblock %}">
-  <meta property="og:url" content="{{ site.url }}/">
+  <meta property="og:url" content="{{ site.url }}/{% block og_path %}{% endblock %}">
   <meta property="og:site_name" content="{{ site.title }}">
+  <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/svg+xml" href="{{ base }}favicon.svg">
+  <link rel="canonical" href="{{ site.url }}/{% block canonical_path %}{% endblock %}">
+  <link rel="stylesheet" href="{{ base }}styles.css">
+  {% block head %}{% endblock %}
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
   <header class="site-header">
-    <div class="wrap">
-      <a class="brand" href="index.html">{{ site.title }}</a>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="blog.html">Blog</a>
-        <a href="about.html">About</a>
+    <div class="wrap header-inner">
+      <a class="brand" href="{{ base }}index.html">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="5"
+               stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="38" cy="16" r="5" fill="#fff" stroke="none"/>
+            <path d="M14 40l10-6 8-14 10 8-6 12"/>
+            <path d="M24 34l-8 14"/>
+            <path d="M36 40l-4 14h10"/>
+          </svg>
+        </span>
+        <span>{{ site.title }}</span>
+      </a>
+
+      <nav class="site-nav" aria-label="Primary">
+        <a href="{{ base }}index.html" {% if page == 'home' %}aria-current="page"{% endif %}>Home</a>
+        <a href="{{ base }}blog.html" {% if page == 'blog' %}aria-current="page"{% endif %}>Blog &amp; Log</a>
+        <a href="{{ base }}about.html" {% if page == 'about' %}aria-current="page"{% endif %}>About</a>
       </nav>
     </div>
   </header>
 
-  <main class="wrap">
+  <main id="main">
     {% block content %}{% endblock %}
   </main>
 
   <footer class="site-footer">
-    <div class="wrap">
-      <p>{{ site.title }} &middot; {{ profile.tagline }}</p>
+    <div class="wrap footer-inner">
+      <div class="footer-brand">
+        <a class="brand" href="{{ base }}index.html">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="5"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="38" cy="16" r="5" fill="#fff" stroke="none"/>
+              <path d="M14 40l10-6 8-14 10 8-6 12"/>
+              <path d="M24 34l-8 14"/>
+              <path d="M36 40l-4 14h10"/>
+            </svg>
+          </span>
+          <span>{{ site.title }}</span>
+        </a>
+        <p>{{ site.description }}</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="{{ base }}index.html">Home</a></li>
+          <li><a href="{{ base }}blog.html">Blog &amp; Log</a></li>
+          <li><a href="{{ base }}about.html">About</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Elsewhere</h4>
+        <ul>
+          {% if site.social.github %}<li><a href="{{ site.social.github }}">GitHub</a></li>{% endif %}
+          {% if site.social.strava %}<li><a href="{{ site.social.strava }}">Strava</a></li>{% endif %}
+          {% if site.social.twitter %}<li><a href="{{ site.social.twitter }}">Twitter</a></li>{% endif %}
+          {% if site.author.email %}<li><a href="mailto:{{ site.author.email }}">Email</a></li>{% endif %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="wrap footer-legal">
+      <span>&copy; {{ year }} {{ site.author.name }}. All rights reserved.</span>
+      <span>Made in {{ site.author.location }} &middot; running one mile at a time.</span>
     </div>
   </footer>
 </body>

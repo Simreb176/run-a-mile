@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Local preview server for the generated site.
 
-Rebuilds `docs/` and serves it on 0.0.0.0:8083 so it is reachable at:
-    http://192.168.1.124:8083   (local network)
-    http://dev.rebecchi.uk:8083 (tailnet)
+Rebuilds `docs/` and serves it on 0.0.0.0:8080 so it is reachable at:
+    http://simon.rebecchi.uk:8080   (the development version)
+
+(Run the deployed site from runamile.co.uk; this port is only for previews.)
 
 Stop it with Ctrl+C.
 """
@@ -13,7 +14,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-PORT = 8083
+PORT = 8080
 ROOT = Path(__file__).parent
 DOCS = ROOT / "docs"
 
@@ -33,8 +34,7 @@ def main():
     )
     with socketserver.TCPServer(("0.0.0.0", PORT), handler) as httpd:
         print(f"\nServing {DOCS} on http://0.0.0.0:{PORT}")
-        print(f"  local network: http://192.168.1.124:{PORT}")
-        print(f"  tailnet:       http://dev.rebecchi.uk:{PORT}")
+        print(f"  development version: http://simon.rebecchi.uk:{PORT}")
         print("Ctrl+C to stop.\n")
         try:
             httpd.serve_forever()

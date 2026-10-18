@@ -1,64 +1,54 @@
 {% extends "base.html" %}
+{% from "_macros.html" import post_card, run_table, goal_card %}
 
 {% block content %}
-<section class="hero">
-  <h1>{{ profile.name }}</h1>
-  <p class="tagline">{{ profile.tagline }}</p>
-  <div class="intro">{{ profile.intro | markdown }}</div>
-</section>
+<div class="wrap">
+  <section class="hero">
+    <p class="eyebrow">A running log</p>
+    <h1>{{ profile.name }}</h1>
+    <p class="tagline">{{ profile.tagline }}</p>
+    <div class="intro">{{ profile.intro | markdown }}</div>
+    <p class="hero-actions">
+      <a class="btn" href="{{ base }}blog.html">Read the blog</a>
+      <a class="btn btn-ghost" href="{{ base }}about.html">About me</a>
+    </p>
+  </section>
 
-{% if profile.goal %}
-<section class="goal">
-  <h2>Goal: {{ profile.goal.label }}</h2>
-  <div class="progress" role="progressbar" aria-valuenow="{{ profile.goal.progress }}"
-       aria-valuemin="0" aria-valuemax="100">
-    <div class="progress-bar" style="width: {{ profile.goal.progress }}%"></div>
-  </div>
-  <p class="progress-label">{{ profile.goal.progress }}% to {{ profile.goal.target }}</p>
-</section>
-{% endif %}
+  {% if profile.goal %}
+  {{ goal_card(profile.goal) }}
+  {% endif %}
 
-{% if profile.stats %}
-<section class="stats">
-  {% for stat in profile.stats %}
-  <div class="stat">
-    <span class="stat-value">{{ stat.value }}</span>
-    <span class="stat-label">{{ stat.label }}</span>
-  </div>
-  {% endfor %}
-</section>
-{% endif %}
+  {% if profile.stats %}
+  <section class="stats" aria-label="Quick stats">
+    {% for stat in profile.stats %}
+    <div class="stat">
+      <span class="stat-value">{{ stat.value }}</span>
+      <span class="stat-label">{{ stat.label }}</span>
+    </div>
+    {% endfor %}
+  </section>
+  {% endif %}
 
-<section class="latest">
-  <h2>Latest posts</h2>
-  {% for post in posts[:3] %}
-  <article class="post-summary">
-    <time datetime="{{ post.date.strftime('%Y-%m-%d') }}">{{ post.date.strftime('%d %b %Y') }}</time>
-    <h3><a href="posts/{{ post.slug }}/index.html">{{ post.title }}</a></h3>
-    <p>{{ post.excerpt }}</p>
-  </article>
-  {% endfor %}
-  <p class="more"><a href="blog.html">All posts &rarr;</a></p>
-</section>
-
-<section class="training-preview">
-  <h2>Recent runs</h2>
-  <table>
-    <thead>
-      <tr><th>Date</th><th>Distance</th><th>Time</th><th>Pace</th><th>Notes</th></tr>
-    </thead>
-    <tbody>
-      {% for run in training[:5] %}
-      <tr>
-        <td>{{ run.date }}</td>
-        <td>{{ run.distance }}</td>
-        <td>{{ run.duration }}</td>
-        <td>{{ run.pace or '—' }}</td>
-        <td>{{ run.notes or '—' }}</td>
-      </tr>
+  <section class="section" aria-labelledby="latest-heading">
+    <div class="section-head">
+      <h2 id="latest-heading">Latest from the road</h2>
+      <a class="more" href="{{ base }}blog.html">All posts &rarr;</a>
+    </div>
+    <div class="post-grid">
+      {% for post in posts[:3] %}
+      {{ post_card(post, base) }}
+      {% else %}
+      <p class="lede">No posts yet — the first one is on its way.</p>
       {% endfor %}
-    </tbody>
-  </table>
-  <p class="more"><a href="blog.html">Full blog &amp; log &rarr;</a></p>
-</section>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="runs-heading">
+    <div class="section-head">
+      <h2 id="runs-heading">Recent runs</h2>
+      <a class="more" href="{{ base }}blog.html#log">Full training log &rarr;</a>
+    </div>
+    {{ run_table(training[:5], base) }}
+  </section>
+</div>
 {% endblock %}

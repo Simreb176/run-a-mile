@@ -1,40 +1,38 @@
 {% extends "base.html" %}
+{% from "_macros.html" import post_card, run_table %}
 {% block title %}Blog &amp; Training Log &middot; {{ site.title }}{% endblock %}
+{% block description %}Every post and every run — the full story of getting back into running.{% endblock %}
+{% block og_path %}blog.html{% endblock %}
+{% block canonical_path %}blog.html{% endblock %}
 
 {% block content %}
-<h1>Blog</h1>
+<div class="wrap">
+  <header class="page-head">
+    <p class="eyebrow">The full story</p>
+    <h1>Blog &amp; Training Log</h1>
+    <p>Every post I've written and every run I've logged, newest first.</p>
+  </header>
 
-<section class="post-list">
-  {% for post in posts %}
-  <article class="post-summary">
-    <time datetime="{{ post.date.strftime('%Y-%m-%d') }}">{{ post.date.strftime('%d %b %Y') }}</time>
-    <h2><a href="posts/{{ post.slug }}/index.html">{{ post.title }}</a></h2>
-    <p>{{ post.excerpt }}</p>
-  </article>
-  {% else %}
-  <p>No posts yet — check back soon.</p>
-  {% endfor %}
-</section>
-
-<h1>Training log</h1>
-<section class="training-log">
-  <table>
-    <thead>
-      <tr><th>Date</th><th>Distance</th><th>Time</th><th>Pace</th><th>Notes</th></tr>
-    </thead>
-    <tbody>
-      {% for run in training %}
-      <tr>
-        <td>{{ run.date }}</td>
-        <td>{{ run.distance }}</td>
-        <td>{{ run.duration }}</td>
-        <td>{{ run.pace or '—' }}</td>
-        <td>{{ run.notes or '—' }}</td>
-      </tr>
+  <section aria-labelledby="posts-heading">
+    <div class="section-head">
+      <h2 id="posts-heading">Posts</h2>
+      <span class="pill">{{ posts | length }} {{ 'post' if posts | length == 1 else 'posts' }}</span>
+    </div>
+    <div class="post-grid">
+      {% for post in posts %}
+      {{ post_card(post, base) }}
       {% else %}
-      <tr><td colspan="5">No runs logged yet.</td></tr>
+      <p class="lede">No posts yet — check back soon.</p>
       {% endfor %}
-    </tbody>
-  </table>
-</section>
+    </div>
+  </section>
+
+  <section class="section" id="log" aria-labelledby="log-heading">
+    <div class="section-head">
+      <h2 id="log-heading">Training log</h2>
+      <span class="pill">{{ training | length }} {{ 'run' if training | length == 1 else 'runs' }}</span>
+    </div>
+    {{ run_table(training, base) }}
+  </section>
+</div>
 {% endblock %}

@@ -6,9 +6,10 @@ and writes the finished site to `docs/`.
 
     .venv/bin/python generate.py        # or: python3 generate.py
 
-`docs/` is the folder served by GitHub Pages (Settings > Pages >
-"Deploy from a branch" > `/docs`), so run this script whenever you edit
-the data or templates, then commit the changes.
+`docs/` is the built site. It is committed so the result is easy to preview
+and review, but the live copy at runamile.co.uk is built fresh in GitHub
+Actions on every push to `main` (see `.github/workflows/pages.yml`).
+Run this script after editing data or templates, then commit the changes.
 """
 from datetime import datetime
 from pathlib import Path
@@ -33,12 +34,12 @@ OUTPUT = ROOT / "docs"
 # Files that must survive a rebuild.
 PRESERVE = {"CNAME", ".nojekyll"}
 
-# Where each page lives in the generated site.
-# key -> output file
+# Where each top-level page lives in the generated site.
+# template -> (output file, page id used to highlight the active nav link)
 PAGES = {
-    "index.html": "index.html",
-    "blog.html": "blog.html",
-    "about.html": "about.html",
+    "index.html": ("index.html", "home"),
+    "blog.html": ("blog.html", "blog"),
+    "about.html": ("about.html", "about"),
 }
 
 
@@ -71,6 +72,8 @@ def load_posts():
         post["date"] = parse_date(raw.get("date"))
         post["slug"] = post.get("slug") or post["title"].lower().replace(" ", "-")
         post["excerpt"] = (post.get("body") or "").strip().split("\n")[0]
+        words = len((post.get("body") or "").split())
+        post["reading_time"] = max(1, round(words / 200))
         posts.append(post)
     posts.sort(key=lambda p: p["date"], reverse=True)
     return posts
@@ -99,6 +102,7 @@ def main():
         "profile": profile,
         "posts": posts,
         "training": training,
+        "year": datetime.now().year,
     }
 
     # Start each build from a clean slate, keeping only the files we must keep.
@@ -114,9 +118,9 @@ def main():
                 child.unlink()
     OUTPUT.mkdir(parents=True, exist_ok=True)
 
-    for template_name, out_name in PAGES.items():
+    for template_name, (out_name, page_id) in PAGES.items():
         template = env.get_template(template_name)
-        write(OUTPUT / out_name, template.render(**context))
+        write(OUTPUT / out_name, template.render(base="", page=page_id, **context))
         print(f"  {out_name}")
 
     # Individual post pages: docs/posts/<slug>/index.html
@@ -124,7 +128,9 @@ def main():
         newer = posts[i - 1] if i > 0 else None
         older = posts[i + 1] if i < len(posts) - 1 else None
         template = env.get_template("post.html")
-        html = template.render(post=post, newer=newer, older=older, **context)
+        html = template.render(
+            post=post, newer=newer, older=older, base="../", page="post", **context
+        )
         write(OUTPUT / "posts" / post["slug"] / "index.html", html)
         print(f"  posts/{post['slug']}/index.html")
 

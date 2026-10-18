@@ -1,0 +1,56 @@
+{# =========================================================================
+   Reusable snippets shared by more than one page.
+   Import at the top of a template with:
+     {% from "_macros.html" import post_card %}
+   ========================================================================= #}
+
+{% macro post_card(post, base) %}
+<a class="post-card" href="{{ base }}posts/{{ post.slug }}/index.html">
+  <time datetime="{{ post.date.strftime('%Y-%m-%d') }}">{{ post.date.strftime('%d %B %Y') }}</time>
+  <h3>{{ post.title }}</h3>
+  <p>{{ post.excerpt }}</p>
+  <span class="read-more">Read the post &rarr;</span>
+</a>
+{% endmacro %}
+
+{% macro run_table(training, base) %}
+<table class="log-table">
+  <caption>Every run, newest first.</caption>
+  <thead>
+    <tr>
+      <th scope="col">Date</th>
+      <th scope="col">Distance</th>
+      <th scope="col">Time</th>
+      <th scope="col">Pace</th>
+      <th scope="col">Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for run in training %}
+    <tr>
+      <td class="num" data-label="Date">{{ run.date }}</td>
+      <td class="num" data-label="Distance">{{ run.distance }}</td>
+      <td class="num" data-label="Time">{{ run.duration }}</td>
+      <td class="num" data-label="Pace">{{ run.pace or '—' }}</td>
+      <td class="notes" data-label="Notes">{{ run.notes or '—' }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5">No runs logged yet — the first one is coming.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endmacro %}
+
+{% macro goal_card(goal) %}
+<section class="goal">
+  <div class="goal-head">
+    <h2>Current goal &mdash; {{ goal.label }}</h2>
+    <span class="goal-pct">{{ goal.progress }}%</span>
+  </div>
+  <div class="progress" role="progressbar" aria-label="Progress towards {{ goal.target }}"
+       aria-valuenow="{{ goal.progress }}" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar" style="width: {{ goal.progress }}%"></div>
+  </div>
+  <p class="progress-label">{{ goal.progress }}% of the way to {{ goal.target }}. Slowly but surely.</p>
+</section>
+{% endmacro %}

@@ -1,24 +1,47 @@
 {% extends "base.html" %}
+{% from "_macros.html" import goal_card %}
 {% block title %}About &middot; {{ site.title }}{% endblock %}
+{% block description %}Who's behind {{ site.title }} and why they're running.{% endblock %}
+{% block og_path %}about.html{% endblock %}
+{% block canonical_path %}about.html{% endblock %}
 
 {% block content %}
-<h1>About</h1>
+<div class="wrap">
+  <header class="page-head">
+    <p class="eyebrow">About</p>
+    <h1>{{ profile.name }}</h1>
+    <p class="tagline">{{ profile.tagline }}</p>
+  </header>
 
-<section class="about">
-  <h2>{{ profile.name }}</h2>
-  <p class="tagline">{{ profile.tagline }}</p>
-  <p>{{ profile.location }}</p>
+  <section class="about-intro">
+    <div class="prose">{{ profile.intro | markdown }}</div>
 
-  <div class="intro">{{ profile.intro | markdown }}</div>
+    <ul class="fact-list">
+      {% if profile.location %}
+      <li><span class="fact-key">Based</span><span>{{ profile.location }}</span></li>
+      {% endif %}
+      {% if profile.goal %}
+      <li><span class="fact-key">Goal</span><span>{{ profile.goal.label }} &mdash; {{ profile.goal.progress }}% of the way there</span></li>
+      {% endif %}
+      {% if site.author.email %}
+      <li><span class="fact-key">Contact</span><span><a href="mailto:{{ site.author.email }}">{{ site.author.email }}</a></span></li>
+      {% endif %}
+    </ul>
+  </section>
 
   {% if profile.goal %}
-  <h2>The goal</h2>
-  <p>{{ profile.goal.label }} &mdash; {{ profile.goal.target }} &mdash; {{ profile.goal.progress }}% there.</p>
+  {{ goal_card(profile.goal) }}
   {% endif %}
 
-  {% if site.author.email %}
-  <h2>Get in touch</h2>
-  <p><a href="mailto:{{ site.author.email }}">{{ site.author.email }}</a></p>
+  {% if site.social.github or site.social.strava or site.social.twitter %}
+  <section class="section">
+    <div class="section-head"><h2>Follow along</h2></div>
+    <p class="lede">
+      {% if site.social.strava %}<a href="{{ site.social.strava }}">Strava</a>{% endif %}
+      {% if site.social.github %}{% if site.social.strava %} &middot; {% endif %}<a href="{{ site.social.github }}">GitHub</a>{% endif %}
+      {% if site.social.twitter %}{% if site.social.strava or site.social.github %} &middot; {% endif %}<a href="{{ site.social.twitter }}">Twitter</a>{% endif %}
+    </p>
+  </section>
   {% endif %}
-</section>
+</div>
 {% endblock %}
