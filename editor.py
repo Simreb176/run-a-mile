@@ -296,13 +296,20 @@ def save_profile(form, progress):
 
 def save_posts(rows, problems):
     posts = []
+    used = {}
     for row in rows:
         date_text = clean_date(row["post_date"], f"The post “{row['post_title']}”", problems)
+        slug = slugify(row["post_slug"]) or slugify(row["post_title"]) or f"post-{date_text}"
+        if slug in used:  # two posts with the same address would overwrite each other
+            used[slug] += 1
+            slug = f"{slug}-{used[slug]}"
+        else:
+            used[slug] = 1
         posts.append(
             {
                 "date": date_text,
                 "title": row["post_title"],
-                "slug": slugify(row["post_slug"]) or slugify(row["post_title"]),
+                "slug": slug,
                 "body": row["post_body"],
             }
         )

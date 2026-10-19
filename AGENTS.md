@@ -178,10 +178,12 @@ He is the ideas person; you are the hands. Keep these habits:
 ## 7. Definition of done
 
 1. Site builds: `.venv/bin/python generate.py` prints no errors.
-2. Preview looks right at http://simon.rebecchi.uk:8080, including the blog
+2. Preview looks right at http://simon-dev.rebecchi.uk:8080, including the blog
    list, a single post page, and the about page on a narrow screen.
 3. Links and stylesheet resolve on **post pages** (they live at
    `/posts/<slug>/`, so every link must be prefixed with `base`).
-4. `EDITING.md` updated if you changed anything the owner can now edit.
+4. `EDITING.md` updated if you changed anything the owner can now edit — and if
+   you changed `data/`, check his editing page still shows the change (and that
+   saving it again writes the same files back).
 5. Committed and pushed, and the live site (or the Actions page) shows the
    change within a minute or two.
