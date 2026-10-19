@@ -35,7 +35,12 @@ def main():
     handler = lambda *args, **kwargs: http.server.SimpleHTTPRequestHandler(
         *args, directory=str(DOCS), **kwargs
     )
-    class Server(socketserver.TCPServer):
+    class Server(socketserver.ThreadingTCPServer):
+        # One connection per thread. A single-threaded server that is left
+        # reading a request line that never arrives — a half-finished TLS
+        # handshake sent at an HTTP port, say — blocks every real visitor
+        # behind it. Threading keeps that to one thread per stuck client.
+        daemon_threads = True
         # Reuse the port immediately so a rapid restart isn't blocked by
         # leftover connections from the previous run.
         allow_reuse_address = True
