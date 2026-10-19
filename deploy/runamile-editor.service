@@ -1,0 +1,19 @@
+[Unit]
+Description=Run A Mile — the editing page
+Documentation=file:///home/simon/Development/run-a-mile/EDITING.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=simon
+WorkingDirectory=/home/simon/Development/run-a-mile
+# systemd does not set HOME for system services, and git needs it to find
+# ~/.ssh when the Publish button pushes.
+Environment=HOME=/home/simon
+Environment=EDITOR_PORT=9001
+ExecStart=/home/simon/Development/run-a-mile/.venv/bin/python editor.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

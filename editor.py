@@ -5,7 +5,7 @@ A small web app that lets the site's owner change the words on runamile.co.uk
 from a browser, with no YAML, no commands and no git:
 
     .venv/bin/python editor.py
-    # then open http://simon-dev.rebecchi.uk:8091
+    # then open http://simon-dev.rebecchi.uk:9001
 
 There are only two buttons that matter:
 
@@ -17,6 +17,11 @@ they are in the file (comments, quoting and all), and the two list files are
 rewritten in the same shape the hand-written versions use, so a save that
 changes nothing produces no diff at all. Every version is in git regardless,
 so nothing here can lose work.
+
+There is no login: the page is only reachable over the tailnet (see the systemd
+unit in deploy/), and it is a single-user tool on a home machine. It binds to
+0.0.0.0 because that is what makes it reachable over the tailnet at all — it is
+not exposed to the public internet.
 
 Dependencies are listed in `requirements-editor.txt` (Flask + ruamel.yaml).
 Only this script needs them — the website build itself uses `requirements.txt`.
@@ -42,7 +47,6 @@ from flask import (
     redirect,
     render_template,
     request,
-    session,
     url_for,
 )
 from ruamel.yaml import YAML
@@ -56,10 +60,9 @@ TEMPLATES = ROOT / "editor_templates"
 # reachable over the tailnet, not just on the LAN.
 PREVIEW_PORT = 8080
 HOST = "0.0.0.0"
-PORT = int(os.environ.get("EDITOR_PORT", "8091"))
+PORT = int(os.environ.get("EDITOR_PORT", "9001"))
 
-# Kept out of git (see .gitignore): the password, the session key, preview log.
-PASS_FILE = ROOT / ".editor-pass"
+# Kept out of git (see .gitignore): the flash-message session key, preview log.
 SECRET_FILE = ROOT / ".editor-secret"
 PREVIEW_LOG = ROOT / ".preview.log"
 
@@ -435,7 +438,7 @@ def ensure_preview():
 
 
 # --------------------------------------------------------------------------
-# The password (this page can publish, so it isn't left wide open)
+# The session key (only used for the "saved" / "published" notices)
 # --------------------------------------------------------------------------
 def read_or_create(path, factory):
     if not path.exists():
@@ -444,47 +447,8 @@ def read_or_create(path, factory):
     return path.read_text(encoding="utf-8").strip()
 
 
-WORDS_A = ["steady", "early", "uphill", "tailwind", "sunrise", "long", "gentle", "brisk"]
-WORDS_B = ["miles", "strides", "shoelaces", "kilometre", "lap", "finish", "splits", "trail"]
-
-
-def new_password():
-    return f"{secrets.choice(WORDS_A)}-{secrets.choice(WORDS_B)}-{secrets.randbelow(90) + 10}"
-
-
 app = Flask(__name__, template_folder=str(TEMPLATES))
 app.secret_key = read_or_create(SECRET_FILE, lambda: secrets.token_hex(32))
-PASSWORD = read_or_create(PASS_FILE, new_password)
-
-
-@app.before_request
-def require_login():
-    if request.endpoint in {"login", "do_login", "static"}:
-        return None
-    if not session.get("in"):
-        return redirect(url_for("login", next=request.path))
-    return None
-
-
-@app.get("/login")
-def login():
-    return render_template("login.html", messages=get_flashed_messages(with_categories=True))
-
-
-@app.post("/login")
-def do_login():
-    if secrets.compare_digest(request.form.get("password", ""), PASSWORD):
-        session.permanent = True
-        session["in"] = True
-        return redirect(request.args.get("next") or url_for("home"))
-    flash("That password didn't match. Try again.", "warn")
-    return redirect(url_for("login"))
-
-
-@app.get("/logout")
-def logout():
-    session.clear()
-    return redirect(url_for("login"))
 
 
 # --------------------------------------------------------------------------
@@ -548,6 +512,4 @@ def preview():
 if __name__ == "__main__":
     print(f"\n  Editing page:  http://simon-dev.rebecchi.uk:{PORT}/")
     print(f"  Also on:       http://{socket.gethostname()}:{PORT}/\n")
-    print(f"  Password:      {PASSWORD}")
-    print(f"  (kept in {PASS_FILE.name}; change it by editing that file)\n")
     app.run(host=HOST, port=PORT, debug=False)

@@ -25,7 +25,7 @@ templates/*.html  ← the layouts (Jinja2 templates, incl. _macros.html)
 styles.css        ← the styling (design tokens are in section 1)
 generate.py       ← reads the YAML, renders the templates into a static site
 docs/             ← the generated site (committed for review/preview)
-editor.py         ← optional: a Flask editing page for the owner (port 8091)
+editor.py         ← the owner's editing page, as a service on port 9001
 ```
 
 The workflow is: edit the YAML (or templates/styles), run `generate.py`, commit
@@ -85,23 +85,26 @@ python3 -m venv .venv
 ## The editing page
 
 `editor.py` is a small Flask app that lets the (non-technical) owner change the
-words on the site from a browser, without touching YAML:
+words on the site from a browser, without touching YAML. It runs as a systemd
+service on port **9001**:
 
 ```bash
 .venv/bin/pip install -r requirements-editor.txt   # Flask + ruamel.yaml
-.venv/bin/python editor.py                         # 0.0.0.0:8091
+make deploy                                        # install, enable and start it
 ```
 
 - **Save** writes `data/*.yml` and rebuilds `docs/`; **Publish** also commits and
   pushes, so GitHub Pages picks it up.
-- It asks for a password, created on first run in `.editor-pass` (gitignored),
-  and can be reached by whoever can reach the box — hence the lock.
+- **There is no login.** It binds `0.0.0.0` (required for the tailnet) but is not
+  reachable from the public internet — see `deploy/runamile-editor.service`.
 - Writes are conservative: values that haven't changed are left byte-identical
   (comments, quoting and folded prose included), so a no-op save produces no
   diff. `data/posts.yml` and `data/training.yml` are re-emitted in the same
   shape the hand-written versions use.
 - Its screens live in `editor_templates/` — deliberately separate from the
   website's `templates/`.
+- `make status`, `make logs` and `make undeploy` do what they say; `make preview`
+  and `make edit` run the preview and the page in the foreground.
 
 ## Previewing the site
 

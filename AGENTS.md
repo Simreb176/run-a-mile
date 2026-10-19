@@ -27,8 +27,10 @@ gratuitously replace it.
 | `styles.css` | All the styling. Section 1 holds every colour/type token | Yes — for appearance |
 | `generate.py` | Reads YAML + templates, writes `docs/` | Only when adding pages/features |
 | `serve.py` | Rebuilds and serves the dev preview on port 8080 | Rarely |
-| `editor.py` | The owner's editing page (Flask) on port 8091. Writes `data/`, rebuilds, commits and pushes | Yes — it's part of the product |
+| `editor.py` | The owner's editing page (Flask) on port 9001. Writes `data/`, rebuilds, commits and pushes | Yes — it's part of the product |
 | `editor_templates/*.html` | The editing page's own screens (**not** the website's) | Yes |
+| `Makefile` | `make deploy` runs the editing page as a service; also `build`, `preview`, `status`, `logs` | Yes |
+| `deploy/runamile-editor.service` | The systemd unit for the editing page | Yes |
 | `docs/` | The **generated** output. Never hand-edit; it is overwritten on build | No (generated) |
 | `.github/workflows/pages.yml` | Builds and publishes on push to `main` | No |
 | `CNAME` | `runamile.co.uk` — binds the GitHub Pages site to the domain | No |
@@ -55,25 +57,32 @@ gratuitously replace it.
 
 ### The editing page (he can change wording himself)
 
-`.venv/bin/python editor.py` runs a small Flask app on **port 8091**
-(http://simon-dev.rebecchi.uk:8091, password in `.editor-pass`). It is the
-owner's self-service route to the words on the site:
+The editing page runs as a systemd service — `make deploy` installs
+`deploy/runamile-editor.service`, enables it and restarts it — on **port 9001**
+(http://simon-dev.rebecchi.uk:9001). It is the owner's self-service route to the
+words on the site:
 
+- **There is no login.** It binds to `0.0.0.0` (so it is reachable over the
+  tailnet) but nothing routes to it from the public internet. Don't add
+  `0.0.0.0`-facing auth back without asking the owner; he explicitly wanted it
+  out of the way.
 - It reads and writes the same `data/*.yml` files, so anything it does, you can
   do — and vice versa. Its templates live in `editor_templates/` (keep website
   templates out of that folder and the editor's out of `templates/`).
 - It writes YAML *gently*: unchanged values keep their comments and quoting, and
   `posts.yml` / `training.yml` are re-emitted in the same shape as the
-  hand-written files (there is a test for exactly this in the repo history —
-  a save that changes nothing must produce no diff).
+  hand-written files. **A save that changes nothing must produce no diff** —
+  that is the property that makes it safe for him to press, so test it after
+  touching `data/` or the editor.
 - **Save** writes the files and rebuilds; **Publish** commits with the message
   "Content update from the editing page" and pushes to `main`. Failures are
   reported on the page in plain language — never a traceback.
 - If you change field names in `data/`, update `editor.py` and
   `editor_templates/_rows.html` in the same commit or the owner's boxes will
   silently stop saving what he types.
-- It's a dev-range tool, so it is started ad-hoc (nothing keeps it running after
-  a reboot). Start it when he asks, or offer to make it permanent under systemd.
+- After changing `editor.py`, run `make deploy` (or `sudo systemctl restart
+  runamile-editor`): the service runs from this working tree and keeps the old
+  code until it restarts. Logs: `make logs`.
 
 ## 4. Going live — how publishing works
 

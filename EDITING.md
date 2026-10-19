@@ -25,14 +25,14 @@ because every version is saved.
 
 ## The other way: the editing page
 
-If you'd rather type it yourself, there's a simple editing page. Ask the
-assistant to start it (or it may already be running), then open:
+If you'd rather type it yourself, there's a simple editing page, always ready
+at:
 
-**http://simon-dev.rebecchi.uk:8091**
+**http://simon-dev.rebecchi.uk:9001**
 
-It asks for a password — it's in the file `.editor-pass` in this folder.
-Everything is in boxes: your details, your goal and numbers, the blog posts,
-the run log, and the site settings. Type, then press
+There's nothing to sign in to — it's only reachable from your own devices, never
+from the open internet. Everything is in boxes: your details, your goal and
+numbers, the blog posts, the run log, and the site settings. Type, then press
 
 - **Save** — rebuilds the preview so you can look at it (nothing public changes);
 - **Publish** — sends it up, and runamile.co.uk updates itself within a minute.
