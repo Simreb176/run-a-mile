@@ -53,6 +53,10 @@ gratuitously replace it.
   **http://simon-dev.rebecchi.uk:8080** (and on the LAN at
   `http://192.168.1.127:8080`). Give the owner the
   `simon-dev.rebecchi.uk:8080` URL — that is the address he knows.
+- Ports on this box: **8080** this site's preview, **8090** the sibling
+  protein-plate preview, **9001** this site's editing page. Don't start a second
+  copy on someone else's port — a stray duplicate preview is exactly what made
+  the box look slow once.
 - Never tell the owner to run commands. Run them, then hand him a link.
 
 ### The editing page (he can change wording himself)
