@@ -1,7 +1,13 @@
 # Python
 __pycache__/
 *.pyc
+*.tmp
 .venv/
+
+# Editing page (editor.py) — local only, never published
+.editor-pass
+.editor-secret
+.preview.log
 
 # macOS
 .DS_Store

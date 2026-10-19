@@ -1,0 +1,4 @@
+# Extra packages for the editing page only (editor.py).
+# The website build itself needs requirements.txt and nothing here.
+Flask>=3.0
+ruamel.yaml>=0.18

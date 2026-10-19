@@ -1,0 +1,74 @@
+{# Repeatable blocks for the editing page. Kept in one place so a saved row and
+   a blank one look identical — the blank ones live inside <template> tags and
+   are cloned by the little script at the bottom of editor.html. #}
+{% macro stat_row(label, value) -%}
+<div class="row" data-filled="{{ 'yes' if (label or value) else 'no' }}">
+  <button type="button" class="kill" aria-label="Remove this number">Remove</button>
+  <div class="grid two">
+    <div class="field">
+      <label>Label</label>
+      <input type="text" name="stat_label" value="{{ label or '' }}" placeholder="Longest run">
+    </div>
+    <div class="field">
+      <label>Number or words</label>
+      <input type="text" name="stat_value" value="{{ value if value is not none else '' }}" placeholder="3.2 km">
+    </div>
+  </div>
+</div>
+{%- endmacro %}
+
+{% macro post_row(date, title, slug, body) -%}
+<div class="row" data-filled="{{ 'yes' if (title or date or body) else 'no' }}">
+  <button type="button" class="kill" aria-label="Remove this post">Remove</button>
+  <div class="grid two">
+    <div class="field">
+      <label>Title</label>
+      <input type="text" name="post_title" value="{{ title or '' }}" placeholder="A Good Run Today">
+    </div>
+    <div class="field">
+      <label>Date (YYYY-MM-DD)</label>
+      <input type="text" name="post_date" value="{{ date or today }}" placeholder="{{ today }}">
+    </div>
+  </div>
+  <div class="field">
+    <label>Web address</label>
+    <input type="text" name="post_slug" value="{{ slug or '' }}" placeholder="a-good-run-today">
+    <div class="small">Filled in from the title as you type. Never reuse one that's been published.</div>
+  </div>
+  <div class="field">
+    <label>Post</label>
+    <textarea class="prose" name="post_body" placeholder="Write it the way you'd say it. Blank line between paragraphs.">{{ body or '' }}</textarea>
+    <div class="small">**bold**, *italic*, [links](https://example.com) and ## headings all work.</div>
+  </div>
+</div>
+{%- endmacro %}
+
+{% macro run_row(date, distance, duration, pace, notes) -%}
+<div class="row" data-filled="{{ 'yes' if (date or distance) else 'no' }}">
+  <button type="button" class="kill" aria-label="Remove this run">Remove</button>
+  <div class="grid three">
+    <div class="field">
+      <label>Date (YYYY-MM-DD)</label>
+      <input type="text" name="run_date" value="{{ date or today }}" placeholder="{{ today }}">
+    </div>
+    <div class="field">
+      <label>Distance</label>
+      <input type="text" name="run_distance" value="{{ distance or '' }}" placeholder="5.0 km">
+    </div>
+    <div class="field">
+      <label>Time</label>
+      <input type="text" name="run_duration" value="{{ duration or '' }}" placeholder="32:15">
+    </div>
+  </div>
+  <div class="grid two">
+    <div class="field">
+      <label>Pace (optional)</label>
+      <input type="text" name="run_pace" value="{{ pace or '' }}" placeholder="6:27 /km">
+    </div>
+    <div class="field">
+      <label>Notes (optional)</label>
+      <input type="text" name="run_notes" value="{{ notes or '' }}" placeholder="Felt great today.">
+    </div>
+  </div>
+</div>
+{%- endmacro %}
