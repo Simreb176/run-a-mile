@@ -27,6 +27,8 @@ gratuitously replace it.
 | `styles.css` | All the styling. Section 1 holds every colour/type token | Yes — for appearance |
 | `generate.py` | Reads YAML + templates, writes `docs/` | Only when adding pages/features |
 | `serve.py` | Rebuilds and serves the dev preview on port 8080 | Rarely |
+| `editor.py` | The owner's editing page (Flask) on port 8091. Writes `data/`, rebuilds, commits and pushes | Yes — it's part of the product |
+| `editor_templates/*.html` | The editing page's own screens (**not** the website's) | Yes |
 | `docs/` | The **generated** output. Never hand-edit; it is overwritten on build | No (generated) |
 | `.github/workflows/pages.yml` | Builds and publishes on push to `main` | No |
 | `CNAME` | `runamile.co.uk` — binds the GitHub Pages site to the domain | No |
@@ -38,7 +40,7 @@ gratuitously replace it.
 # 1. Make the change (usually a data/*.yml or styles.css edit)
 
 # 2. Rebuild and preview
-.venv/bin/python serve.py         # serves http://simon.rebecchi.uk:8080
+.venv/bin/python serve.py         # serves http://simon-dev.rebecchi.uk:8080
 ```
 
 - **Always rebuild and check your work before showing it to the owner.**
@@ -46,10 +48,32 @@ gratuitously replace it.
   .venv/bin/python generate.py      # just rebuilds docs/
   ```
 - The dev preview runs on **port 8080** and is reachable at
-  **http://simon.rebecchi.uk:8080** (and on the LAN at
-  `http://192.168.1.124:8080`). Give the owner the
-  `simon.rebecchi.uk:8080` URL — that is the address he knows.
+  **http://simon-dev.rebecchi.uk:8080** (and on the LAN at
+  `http://192.168.1.127:8080`). Give the owner the
+  `simon-dev.rebecchi.uk:8080` URL — that is the address he knows.
 - Never tell the owner to run commands. Run them, then hand him a link.
+
+### The editing page (he can change wording himself)
+
+`.venv/bin/python editor.py` runs a small Flask app on **port 8091**
+(http://simon-dev.rebecchi.uk:8091, password in `.editor-pass`). It is the
+owner's self-service route to the words on the site:
+
+- It reads and writes the same `data/*.yml` files, so anything it does, you can
+  do — and vice versa. Its templates live in `editor_templates/` (keep website
+  templates out of that folder and the editor's out of `templates/`).
+- It writes YAML *gently*: unchanged values keep their comments and quoting, and
+  `posts.yml` / `training.yml` are re-emitted in the same shape as the
+  hand-written files (there is a test for exactly this in the repo history —
+  a save that changes nothing must produce no diff).
+- **Save** writes the files and rebuilds; **Publish** commits with the message
+  "Content update from the editing page" and pushes to `main`. Failures are
+  reported on the page in plain language — never a traceback.
+- If you change field names in `data/`, update `editor.py` and
+  `editor_templates/_rows.html` in the same commit or the owner's boxes will
+  silently stop saving what he types.
+- It's a dev-range tool, so it is started ad-hoc (nothing keeps it running after
+  a reboot). Start it when he asks, or offer to make it permanent under systemd.
 
 ## 4. Going live — how publishing works
 

@@ -176,7 +176,7 @@ a.preview{color:var(--muted);font-size:.9rem}
     <!-- 3. Blog posts --------------------------------------------------- -->
     <section class="panel" id="panel-posts" role="tabpanel">
       <h2>Blog posts</h2>
-      <p class="hint">Newest first is handled for you — posts are sorted by date when you save.</p>
+      <p class="hint">Newest first is handled for you — posts are sorted by date when you save. Every post needs a title.</p>
       <div class="card">
         <h3>New post</h3>
         {{ post_row('', '', '', '') }}
@@ -193,7 +193,7 @@ a.preview{color:var(--muted);font-size:.9rem}
     <!-- 4. Run log ------------------------------------------------------ -->
     <section class="panel" id="panel-runs" role="tabpanel">
       <h2>Run log</h2>
-      <p class="hint">One entry per run. Times like 21:40 are looked after — just type them as normal.</p>
+      <p class="hint">One entry per run. Times like 21:40 are looked after — just type them as normal. Every run needs a distance.</p>
       <div class="card">
         <h3>New run</h3>
         {{ run_row('', '', '', '', '') }}

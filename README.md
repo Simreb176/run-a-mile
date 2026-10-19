@@ -25,6 +25,7 @@ templates/*.html  ← the layouts (Jinja2 templates, incl. _macros.html)
 styles.css        ← the styling (design tokens are in section 1)
 generate.py       ← reads the YAML, renders the templates into a static site
 docs/             ← the generated site (committed for review/preview)
+editor.py         ← optional: a Flask editing page for the owner (port 8091)
 ```
 
 The workflow is: edit the YAML (or templates/styles), run `generate.py`, commit
@@ -81,6 +82,27 @@ python3 -m venv .venv
 .venv/bin/python generate.py
 ```
 
+## The editing page
+
+`editor.py` is a small Flask app that lets the (non-technical) owner change the
+words on the site from a browser, without touching YAML:
+
+```bash
+.venv/bin/pip install -r requirements-editor.txt   # Flask + ruamel.yaml
+.venv/bin/python editor.py                         # 0.0.0.0:8091
+```
+
+- **Save** writes `data/*.yml` and rebuilds `docs/`; **Publish** also commits and
+  pushes, so GitHub Pages picks it up.
+- It asks for a password, created on first run in `.editor-pass` (gitignored),
+  and can be reached by whoever can reach the box — hence the lock.
+- Writes are conservative: values that haven't changed are left byte-identical
+  (comments, quoting and folded prose included), so a no-op save produces no
+  diff. `data/posts.yml` and `data/training.yml` are re-emitted in the same
+  shape the hand-written versions use.
+- Its screens live in `editor_templates/` — deliberately separate from the
+  website's `templates/`.
+
 ## Previewing the site
 
 ```bash
@@ -89,8 +111,8 @@ python3 -m venv .venv
 
 This rebuilds the site and serves it on `0.0.0.0:8080`:
 
-- development version: http://simon.rebecchi.uk:8080
-- local network: http://192.168.1.124:8080
+- development version: http://simon-dev.rebecchi.uk:8080
+- local network: http://192.168.1.127:8080
 
 ## Publishing to GitHub Pages
 
@@ -109,5 +131,6 @@ git commit -m "Describe the change"
 git push origin main
 ```
 
-Check the deploy with `gh run list --limit 3`; the site updates about a minute
-after a green run.
+(or the **Publish** button on the editing page, which runs exactly that). Check
+the deploy by watching the Actions tab; the site updates about a minute after a
+green run.

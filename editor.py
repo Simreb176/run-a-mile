@@ -375,18 +375,25 @@ def rebuild():
     return done.returncode == 0, (done.stdout + done.stderr).strip()
 
 
+def unpushed_commits():
+    done = run("git", "rev-list", "--count", "@{upstream}..HEAD")
+    return int(done.stdout.strip() or 0) if done.returncode == 0 else 0
+
+
 def publish():
     ok, output = rebuild()
     if not ok:
         return False, f"The site didn't build, so nothing was published.\n\n{output}"
 
-    if not run("git", "status", "--porcelain").stdout.strip():
+    changes = bool(run("git", "status", "--porcelain").stdout.strip())
+    if not changes and not unpushed_commits():
         return True, "There was nothing new to publish — the site is already up to date."
 
-    run("git", "add", "-A")
-    commit = run("git", "commit", "-m", COMMIT_MESSAGE)
-    if commit.returncode != 0:
-        return False, f"Couldn't save a version of your changes.\n\n{commit.stdout}{commit.stderr}"
+    if changes:
+        run("git", "add", "-A")
+        commit = run("git", "commit", "-m", COMMIT_MESSAGE)
+        if commit.returncode != 0:
+            return False, f"Couldn't save a version of your changes.\n\n{commit.stdout}{commit.stderr}"
 
     push = run("git", "push", "origin", "main")
     if push.returncode != 0:

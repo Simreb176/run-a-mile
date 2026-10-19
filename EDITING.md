@@ -19,18 +19,39 @@ at. When you're happy, it publishes it. **You never have to run a command or
 edit a file.** The rest of this guide is for when you're curious about what's
 under the bonnet, or want to do a small edit by hand.
 
-Whatever happens, remember the golden rule: **nothing goes live until the
-assistant pushes it.** You can always look first, and nothing can be broken for
-real because every version is saved.
+Whatever happens, remember the golden rule: **nothing goes live until you
+publish it.** You can always look first, and nothing can be broken for real
+because every version is saved.
+
+## The other way: the editing page
+
+If you'd rather type it yourself, there's a simple editing page. Ask the
+assistant to start it (or it may already be running), then open:
+
+**http://simon-dev.rebecchi.uk:8091**
+
+It asks for a password — it's in the file `.editor-pass` in this folder.
+Everything is in boxes: your details, your goal and numbers, the blog posts,
+the run log, and the site settings. Type, then press
+
+- **Save** — rebuilds the preview so you can look at it (nothing public changes);
+- **Publish** — sends it up, and runamile.co.uk updates itself within a minute.
+
+You can add and remove posts and runs, and the page puts them in date order for
+you. Times like `21:40` are looked after, so type them as normal. Nothing you
+can do here loses work: every version is saved, and a save that changes nothing
+changes nothing at all.
+
 
 ## How the site is put together
 
 ```
-data/       ← your words: posts, runs, your profile, site settings
-templates/  ← the page layouts (the "skeleton" of each page)
-styles.css  ← the look: colours, fonts, spacing
-generate.py ← builds the website from the three things above
-docs/       ← the finished website (built automatically — don't edit this)
+data/            ← your words: posts, runs, your profile, site settings
+templates/       ← the page layouts (the "skeleton" of each page)
+styles.css       ← the look: colours, fonts, spacing
+generate.py      ← builds the website from the three things above
+editor.py        ← the editing page, if you'd rather type it yourself
+docs/            ← the finished website (built automatically — don't edit this)
 ```
 
 You'll mostly live in `data/`. Everything in those files is written in **YAML**,
@@ -93,7 +114,8 @@ Add one entry at the top of `data/training.yml`:
 Open `data/profile.yml`:
 
 - **`name`**, **`tagline`**, **`location`** and **`intro`** are the words at the
-  top of the home page and the whole About page.
+  top of the home page and the whole About page. **`eyebrow`** is the small line
+  just above your name on the home page.
 - **`goal`** drives the progress bar. `progress` is a percentage from 0 to 100 —
   nudge it up as you get closer.
 - **`stats`** is the row of numbers on the home page. Edit the values or add
@@ -122,23 +144,23 @@ monthly mileage totals, or a contact form — none of it is a big job.
 
 ## Seeing your changes — the development version
 
-Before anything goes live you can look at a **development version**. Ask the
-assistant to start the preview, then open:
+Before anything goes live you can look at a **development version**:
 
-**http://simon.rebecchi.uk:8080**
+**http://simon-dev.rebecchi.uk:8080**
 
 That's your work-in-progress. Nothing here is public and nothing here affects
-the real site. When you've looked and you're happy, tell the assistant and it
-publishes.
+the real site. Press **Save** on the editing page and this rebuilds itself;
+when you've looked and you're happy, press **Publish** (or ask the assistant
+and it publishes for you).
 
 (If you ever want to stop the preview, just say so — or press `Ctrl+C` in the
 terminal window that's running it.)
 
 ## Publishing to the internet
 
-Your **live site is https://runamile.co.uk**. There's no button to press and
-no settings to change: when the assistant sends your changes up, the live site
-rebuilds itself automatically and updates within a minute or two.
+Your **live site is https://runamile.co.uk**. Changes go up either when you
+press **Publish** on the editing page, or when you ask the assistant to send
+them — and then the live site rebuilds itself, usually within a minute.
 
 To double-check it worked, just visit **https://runamile.co.uk** — or open it on
 your phone. If you're not sure, ask the assistant to confirm the upload
