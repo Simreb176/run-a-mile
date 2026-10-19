@@ -5,6 +5,9 @@ name: Simon Rebecchi
 tagline: "Getting back to running, one mile at a time."
 location: Nottingham, UK
 
+# The small line above your name on the home page.
+eyebrow: My return to running journey
+
 # Shown on the home page hero and the about page.
 intro: >
   I've decided to run a mile. Which, depending on how you say it, is either the
