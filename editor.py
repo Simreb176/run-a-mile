@@ -29,12 +29,11 @@ import secrets
 import socket
 import subprocess
 import sys
+import textwrap
 import time
 from datetime import date
 from io import StringIO
 from pathlib import Path
-
-import textwrap
 
 from flask import (
     Flask,
@@ -204,7 +203,7 @@ def write_rows_file(path, rows, block_keys=()):
             first = False
         blocks.append("\n".join(lines))
 
-    parts = [leading_comments(path)] + blocks if blocks else [leading_comments(path)]
+    parts = [leading_comments(path), *blocks]
     text = "\n\n".join(part for part in parts if part) + "\n"
     tmp = path.with_name(path.name + ".tmp")
     tmp.write_text(text, encoding="utf-8")
@@ -270,8 +269,11 @@ def save_profile(form, progress):
 
     intro = normalise(form.get("profile_intro")).strip("\n")
     if not same(profile.get("intro"), intro):
-        # A literal block, so the paragraphs stay readable in the file.
-        profile["intro"] = LiteralScalarString(fmt_block(intro, 2) + "\n")
+        if intro.strip():
+            # A literal block, so the paragraphs stay readable in the file.
+            profile["intro"] = LiteralScalarString(fmt_block(intro, 2) + "\n")
+        else:
+            profile["intro"] = ""
 
     goal = profile.get("goal") or {}
     set_value(goal, "label", normalise(form.get("goal_label")).strip())
