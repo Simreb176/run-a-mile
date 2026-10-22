@@ -4,33 +4,3 @@
 # duration  - total moving time
 # pace      - average pace (optional)
 # notes     - anything worth remembering (optional)
-
-- date: 2026-10-15
-  distance: 3.2 km
-  duration: "21:40"
-  pace: 6:46 /km
-  notes: Felt strong. Negative split the last kilometre.
-
-- date: 2026-10-13
-  distance: 2.5 km
-  duration: "17:05"
-  pace: 6:50 /km
-  notes: Easy shakeout run after work.
-
-- date: 2026-10-11
-  distance: 4.0 km
-  duration: "28:30"
-  pace: 7:08 /km
-  notes: Long run. Legs heavy for the first km, then they woke up.
-
-- date: 2026-10-08
-  distance: 2.0 km
-  duration: "13:20"
-  pace: 6:40 /km
-  notes: Quick one before breakfast.
-
-- date: 2026-10-05
-  distance: 1.5 km
-  duration: "10:45"
-  pace: 7:10 /km
-  notes: First run of the week. Slow is fine.
