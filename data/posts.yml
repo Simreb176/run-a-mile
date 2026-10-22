@@ -15,20 +15,6 @@
   body: |
     I’ve given up all supplements.  Why?
 
-- date: 2026-10-12
-  title: Hello, World (Again)
-  slug: hello-world
-  body: |
-    This is the first post on my new site. After too long away from the road,
-    I've decided it's time to run again — and to write about it while I do.
-
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. The plan is simple:
-    start slow, stay consistent, and try not to injure myself in week two.
-    Every run gets logged here, and every lesson learned gets written down.
-
-    If you're somewhere on your own comeback journey, I hope this helps. See you
-    at the next mile marker.
-
 - date: 2026-10-05
   title: The First Week Back
   slug: the-first-week-back
