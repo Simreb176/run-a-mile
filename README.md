@@ -97,12 +97,15 @@ make deploy                                        # install, enable and start i
   pushes, so GitHub Pages picks it up.
 - **There is no login.** It binds `0.0.0.0` (required for the tailnet) but is not
   reachable from the public internet — see `deploy/runamile-editor.service`.
+- Blog posts are written on their own screen (`/posts`): a list with Edit and
+  Delete, and a writing form. Deleting removes the post and its generated page.
+  The main screen handles details, goal, runs and site settings.
 - Writes are conservative: values that haven't changed are left byte-identical
   (comments, quoting and folded prose included), so a no-op save produces no
   diff. `data/posts.yml` and `data/training.yml` are re-emitted in the same
   shape the hand-written versions use.
-- Its screens live in `editor_templates/` — deliberately separate from the
-  website's `templates/`.
+- Its screens live in `editor_templates/`, with `editor_static/editor.css` —
+  deliberately separate from the website's `templates/` and `styles.css`.
 - `make status`, `make logs` and `make undeploy` do what they say; `make preview`
   and `make edit` run the preview and the page in the foreground.
 

@@ -67,9 +67,24 @@ line up belong together. When in doubt, copy the shape of the block above.
 | `data/profile.yml` | Your name, tagline, story, goal and home-page stats |
 | `data/site.yml` | The site title, description, contact email and social links |
 
-## Writing a blog post
+## Writing, editing and deleting a blog post
 
-Add a new block at the **top** of the list in `data/posts.yml`:
+Open the editing page and choose **Blog posts** in the strip along the top
+(that's **http://simon-dev.rebecchi.uk:9001/posts**).
+
+- **Write a new post** — a title, the date it's first written, and the words.
+  Press **Save**: it appears on the blog straight away in the preview. Press
+  **Publish** when you're ready for the world to see it.
+- **Edit** next to any post — the same form, already filled in. Change what you
+  like; the date stays put unless you change it, so the post keeps its place.
+- **Delete** next to any post — it asks first, then removes the post *and* the
+  page it lived at. Nothing is left behind on the site once you publish.
+
+On the blog, each post shows its **title in bold** with the date it was first
+written underneath in smaller type.
+
+If you ever want to do it by hand instead, a post is one block at the top of
+`data/posts.yml`:
 
 ```yaml
 - date: 2026-10-20

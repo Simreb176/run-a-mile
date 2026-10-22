@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Blog posts &middot; Edit runamile.co.uk{% endblock %}
+
+{% block content %}
+<p class="howto">
+  <strong>Write a post, then press Save</strong> to rebuild the preview and read it back.
+  When you're happy, press <strong>Publish</strong> and runamile.co.uk updates itself within a minute.
+  Deleting a post here removes it from the site completely — the page it lived at is
+  deleted too, not just unlinked.
+</p>
+
+<div class="section-head">
+  <h2 class="heading">Blog posts
+    <span class="small" style="font-weight:400">({{ posts|length }})</span></h2>
+  <a class="btn primary small" href="{{ url_for('post_new') }}">Write a new post</a>
+</div>
+
+{% if posts %}
+<div class="post-list">
+  {% for post in posts %}
+  <div class="post-item">
+    <div class="body">
+      <h3>{{ post.title }}</h3>
+      <time datetime="{{ post.date }}">First written {{ post.date | friendly_date }}</time>
+      <p class="excerpt">{{ post.excerpt or 'No text yet.' }}</p>
+    </div>
+    <div class="actions">
+      <a class="btn ghost small" href="{{ url_for('post_edit', slug=post.slug) }}">Edit</a>
+      <form method="post" action="{{ url_for('post_delete') }}" data-title="{{ post.title }}">
+        <input type="hidden" name="slug" value="{{ post.slug }}">
+        <button type="submit" class="danger">Delete</button>
+      </form>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p class="post-list-empty">No posts yet. <a href="{{ url_for('post_new') }}">Write the first one</a>.</p>
+{% endif %}
+
+<form method="post" action="{{ url_for('do_publish') }}" id="publish-form"></form>
+<div class="bar">
+  <div class="inner">
+    <button class="btn publish" type="submit" form="publish-form"
+            data-confirm="Publish the site to runamile.co.uk?">Publish</button>
+    <a class="preview" href="{{ url_for('preview') }}" target="_blank" rel="noopener">See the preview &rarr;</a>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.querySelectorAll('form[data-title]').forEach(form => {
+  form.addEventListener('submit', event => {
+    const message = 'Delete \u201c' + form.dataset.title + '\u201d?\n\n'
+      + 'It disappears from the site completely once you press Publish.';
+    if (!confirm(message)) event.preventDefault();
+  });
+});
+const publish = document.querySelector('button.publish');
+publish.addEventListener('click', event => {
+  if (!confirm(publish.dataset.confirm)) event.preventDefault();
+});
+</script>
+{% endblock %}

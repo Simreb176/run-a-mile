@@ -1,290 +1,182 @@
-<!DOCTYPE html>
-<html lang="en-GB">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light dark">
-<meta name="robots" content="noindex">
-<title>Edit runamile.co.uk</title>
-{% from "_rows.html" import post_row, run_row, stat_row %}
-<style>
-:root{
-  --bg:#fdf9f4; --bg-alt:#f6efe6; --surface:#fff; --line:#ece2d4; --line-strong:#ddcebb;
-  --ink:#211c17; --muted:#6f6659; --faint:#948a7b;
-  --accent:#d9480f; --accent-strong:#b23c07; --accent-soft:#ffe8d6;
-  --good:#2f6f4f; --good-soft:#e3f3e9; --bad:#a4262c; --bad-soft:#fbe6e7;
-  --radius:14px; --radius-sm:9px;
-  --font-sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  --font-serif:ui-serif,Georgia,Cambria,"Times New Roman",serif;
-}
-@media (prefers-color-scheme: dark){
-  :root{--bg:#14110e; --bg-alt:#1c1814; --surface:#1f1b16; --line:#2f2a23; --line-strong:#453d32;
-  --ink:#f4efe8; --muted:#b3a695; --faint:#8d8271; --accent:#f97e4a; --accent-strong:#ffa273;
-  --accent-soft:#38241a; --good:#7ed0a4; --good-soft:#1d2d24; --bad:#ff9a9a; --bad-soft:#33201f;}
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans);line-height:1.55}
-.wrap{max-width:900px;margin:0 auto;padding:20px 16px 140px}
-header.top{display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;justify-content:space-between;
-  padding:8px 0 16px;border-bottom:1px solid var(--line)}
-header.top h1{margin:0;font-size:1.35rem;font-family:var(--font-serif)}
-header.top .who{color:var(--muted);font-size:.85rem}
-header.top a{color:var(--muted)}
-.howto{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-  padding:14px 16px;margin:18px 0;color:var(--muted);font-size:.92rem}
-.howto strong{color:var(--ink)}
-nav.tabs{display:flex;gap:6px;overflow-x:auto;margin:18px 0 0;padding-bottom:2px}
-nav.tabs button{font:inherit;font-size:.92rem;white-space:nowrap;padding:9px 14px;border-radius:999px;
-  border:1px solid var(--line-strong);background:var(--surface);color:var(--muted);cursor:pointer}
-nav.tabs button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
-section.panel{display:none;padding-top:22px}
-section.panel.on{display:block}
-section.panel > h2{font-size:1.05rem;font-family:var(--font-serif);margin:0 0 4px}
-section.panel > p.hint{color:var(--muted);font-size:.9rem;margin:0 0 18px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-  padding:16px;margin-bottom:16px}
-.card > h3{margin:0 0 12px;font-size:.95rem;font-weight:600;color:var(--muted);letter-spacing:.02em;
-  text-transform:uppercase;font-size:.78rem}
-label{display:block;font-size:.85rem;color:var(--muted);margin:0 0 4px;font-weight:500}
-input[type=text],input[type=url],input[type=email],input[type=number],textarea{
-  width:100%;font:inherit;font-size:.97rem;color:var(--ink);background:var(--bg-alt);
-  border:1px solid var(--line-strong);border-radius:var(--radius-sm);padding:10px 12px}
-textarea{resize:vertical;min-height:90px;line-height:1.6}
-textarea.prose{min-height:230px}
-input:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px;background:var(--surface)}
-.field{margin-bottom:14px}
-.grid{display:grid;gap:12px}
-@media (min-width:640px){.grid.two{grid-template-columns:1fr 1fr}.grid.three{grid-template-columns:1fr 1fr 1fr}}
-.row{border-top:1px dashed var(--line-strong);padding-top:14px;margin-top:14px;position:relative}
-.row:first-of-type{border-top:0;padding-top:0;margin-top:0}
-.row .kill{position:absolute;top:10px;right:0;font:inherit;font-size:.8rem;color:var(--bad);
-  background:none;border:0;cursor:pointer;text-decoration:underline}
-.row .grid{margin-top:12px}
-.addrow{margin-top:16px;background:var(--accent-soft);border:1px dashed var(--accent);color:var(--accent-strong);
-  font:inherit;font-size:.9rem;font-weight:600;border-radius:var(--radius-sm);padding:9px 14px;cursor:pointer}
-.small{font-size:.8rem;color:var(--faint);margin-top:4px}
-.msg{border-radius:var(--radius-sm);padding:12px 14px;margin:14px 0;white-space:pre-wrap;font-size:.93rem}
-.msg.good{background:var(--good-soft);color:var(--good);border:1px solid var(--good)}
-.msg.bad{background:var(--bad-soft);color:var(--bad);border:1px solid var(--bad);font-family:var(--font-mono,monospace);font-size:.85rem}
-.msg.warn{background:var(--accent-soft);color:var(--accent-strong);border:1px solid var(--accent)}
-.bar{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line-strong);
-  box-shadow:0 -6px 24px -18px rgba(0,0,0,.4);padding:12px 16px;display:flex;flex-wrap:wrap;gap:10px;
-  align-items:center;justify-content:center}
-.bar .inner{max-width:900px;width:100%;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center}
-button.btn{font:inherit;font-weight:600;border-radius:999px;padding:11px 22px;cursor:pointer;border:1px solid transparent}
-button.save{background:var(--bg-alt);border-color:var(--line-strong);color:var(--ink)}
-button.publish{background:var(--accent);color:#fff}
-button.publish:hover{background:var(--accent-strong)}
-a.preview{color:var(--muted);font-size:.9rem}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <header class="top">
-    <h1>Edit runamile.co.uk</h1>
-    <div class="who">
-      {{ view.profile.name }} ·
-      <a href="{{ live_url }}" target="_blank" rel="noopener">the live site</a>
-    </div>
-  </header>
+{% extends "base.html" %}
+{% from "_rows.html" import run_row, stat_row %}
+{% block title %}Your site &middot; Edit runamile.co.uk{% endblock %}
 
-  <p class="howto">
-    <strong>Type in the boxes below, then press Save</strong> to rebuild the preview and take a look.
-    When you're happy, press <strong>Publish</strong> and the real site updates itself within a minute.
-    Every version is saved, so nothing here can break anything for good — and there's no rush.
-  </p>
+{% block content %}
+<p class="howto">
+  <strong>Type in the boxes, then press Save</strong> to rebuild the preview and take a look.
+  When you're happy, press <strong>Publish</strong> and the real site updates itself within a minute.
+  Blog posts have their own page — <a href="{{ url_for('posts') }}">Blog posts</a>.
+</p>
 
-  {% for category, message in messages %}
-    <div class="msg {{ 'good' if category == 'good' else 'bad' if category == 'bad' else 'warn' }}">{{ message }}</div>
-  {% endfor %}
+<form method="post" action="{{ url_for('do_save') }}">
 
-  <form method="post" action="{{ url_for('do_save') }}">
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button type="button" role="tab" data-tab="details" aria-selected="true">Your details</button>
+    <button type="button" role="tab" data-tab="goal" aria-selected="false">Goal &amp; numbers</button>
+    <button type="button" role="tab" data-tab="runs" aria-selected="false">Run log ({{ view.training|length }})</button>
+    <button type="button" role="tab" data-tab="site" aria-selected="false">Site settings</button>
+  </nav>
 
-    <nav class="tabs" role="tablist" aria-label="Sections">
-      <button type="button" role="tab" data-tab="details" aria-selected="true">Your details</button>
-      <button type="button" role="tab" data-tab="goal" aria-selected="false">Goal &amp; numbers</button>
-      <button type="button" role="tab" data-tab="posts" aria-selected="false">Blog posts ({{ view.posts|length }})</button>
-      <button type="button" role="tab" data-tab="runs" aria-selected="false">Run log ({{ view.training|length }})</button>
-      <button type="button" role="tab" data-tab="site" aria-selected="false">Site settings</button>
-    </nav>
-
-    <!-- 1. Your details ------------------------------------------------ -->
-    <section class="panel on" id="panel-details" role="tabpanel">
-      <h2>Your details</h2>
-      <p class="hint">These words appear at the top of the home page and all over the About page.</p>
-      <div class="card">
+  <!-- 1. Your details -------------------------------------------------- -->
+  <section class="panel on" id="panel-details" role="tabpanel">
+    <h2>Your details</h2>
+    <p class="hint">These words appear at the top of the home page and all over the About page.</p>
+    <div class="card">
+      <div class="field">
+        <label for="profile_eyebrow">The small line above your name</label>
+        <input type="text" id="profile_eyebrow" name="profile_eyebrow" value="{{ view.profile.eyebrow or '' }}">
+      </div>
+      <div class="grid two">
         <div class="field">
-          <label for="profile_eyebrow">The small line above your name</label>
-          <input type="text" id="profile_eyebrow" name="profile_eyebrow" value="{{ view.profile.eyebrow or '' }}">
-        </div>
-        <div class="grid two">
-          <div class="field">
-            <label for="profile_name">Your name</label>
-            <input type="text" id="profile_name" name="profile_name" value="{{ view.profile.name or '' }}">
-          </div>
-          <div class="field">
-            <label for="profile_location">Where you run</label>
-            <input type="text" id="profile_location" name="profile_location" value="{{ view.profile.location or '' }}">
-          </div>
+          <label for="profile_name">Your name</label>
+          <input type="text" id="profile_name" name="profile_name" value="{{ view.profile.name or '' }}">
         </div>
         <div class="field">
-          <label for="profile_tagline">Tagline</label>
-          <input type="text" id="profile_tagline" name="profile_tagline" value="{{ view.profile.tagline or '' }}">
-        </div>
-        <div class="field">
-          <label for="profile_intro">Your story</label>
-          <textarea class="prose" id="profile_intro" name="profile_intro">{{ view.profile.intro or '' }}</textarea>
-          <div class="small">Leave a blank line between paragraphs. This is the long piece on the home page and the About page.</div>
+          <label for="profile_location">Where you run</label>
+          <input type="text" id="profile_location" name="profile_location" value="{{ view.profile.location or '' }}">
         </div>
       </div>
-    </section>
-
-    <!-- 2. Goal and numbers -------------------------------------------- -->
-    <section class="panel" id="panel-goal" role="tabpanel">
-      <h2>Goal &amp; numbers</h2>
-      <p class="hint">The progress bar and the row of quick facts on the home page.</p>
-      <div class="card">
-        <h3>Your current goal</h3>
-        <div class="grid three">
-          <div class="field">
-            <label for="goal_label">What it's called</label>
-            <input type="text" id="goal_label" name="goal_label" value="{{ view.profile.goal.label or '' }}">
-          </div>
-          <div class="field">
-            <label for="goal_target">The target</label>
-            <input type="text" id="goal_target" name="goal_target" value="{{ view.profile.goal.target or '' }}">
-          </div>
-          <div class="field">
-            <label for="goal_progress">How far along (%)</label>
-            <input type="number" id="goal_progress" name="goal_progress" min="0" max="100"
-                   value="{{ view.profile.goal.progress if view.profile.goal.progress is not none else '' }}">
-          </div>
-        </div>
+      <div class="field">
+        <label for="profile_tagline">Tagline</label>
+        <input type="text" id="profile_tagline" name="profile_tagline" value="{{ view.profile.tagline or '' }}">
       </div>
-      <div class="card">
-        <h3>Quick facts</h3>
-        {% for stat in view.profile.stats or [] %}
-          {{ stat_row(stat.label, stat.value) }}
-        {% endfor %}
-        {{ stat_row('', '') }}
-        <button type="button" class="addrow" data-add="stat">+ Add a number</button>
-        <div class="small">Order is up to you — drag isn't needed, just delete and re-add if you want them moved.</div>
-      </div>
-    </section>
-
-    <!-- 3. Blog posts --------------------------------------------------- -->
-    <section class="panel" id="panel-posts" role="tabpanel">
-      <h2>Blog posts</h2>
-      <p class="hint">Newest first is handled for you — posts are sorted by date when you save. Every post needs a title.</p>
-      <div class="card">
-        <h3>New post</h3>
-        {{ post_row('', '', '', '') }}
-      </div>
-      {% for post in view.posts %}
-      <div class="card">
-        <h3>Posted {{ post.date }}</h3>
-        {{ post_row(post.date, post.title, post.slug, post.body) }}
-      </div>
-      {% endfor %}
-      <button type="button" class="addrow" data-add="post">+ Add another blank post</button>
-    </section>
-
-    <!-- 4. Run log ------------------------------------------------------ -->
-    <section class="panel" id="panel-runs" role="tabpanel">
-      <h2>Run log</h2>
-      <p class="hint">One entry per run. Times like 21:40 are looked after — just type them as normal. Every run needs a distance.</p>
-      <div class="card">
-        <h3>New run</h3>
-        {{ run_row('', '', '', '', '') }}
-      </div>
-      {% for entry in view.training %}
-      <div class="card">
-        <h3>{{ entry.date }}</h3>
-        {{ run_row(entry.date, entry.distance, entry.duration, entry.pace, entry.notes) }}
-      </div>
-      {% endfor %}
-      <button type="button" class="addrow" data-add="run">+ Add another blank run</button>
-    </section>
-
-    <!-- 5. Site settings ------------------------------------------------ -->
-    <section class="panel" id="panel-site" role="tabpanel">
-      <h2>Site settings</h2>
-      <p class="hint">The title in the browser tab, what Google and WhatsApp see, and how people reach you.</p>
-      <div class="card">
-        <h3>The site itself</h3>
-        <div class="field">
-          <label for="site_title">Site name</label>
-          <input type="text" id="site_title" name="site_title" value="{{ view.site.title or '' }}">
-        </div>
-        <div class="field">
-          <label for="site_description">One-line description</label>
-          <input type="text" id="site_description" name="site_description" value="{{ view.site.description or '' }}">
-        </div>
-        <div class="field">
-          <label for="site_url">Web address</label>
-          <input type="url" id="site_url" name="site_url" value="{{ view.site.url or '' }}">
-        </div>
-        <div class="field">
-          <label for="seo_description">What search engines and shared links say</label>
-          <textarea id="seo_description" name="seo_description">{{ view.site.seo.description or '' }}</textarea>
-        </div>
-      </div>
-      <div class="card">
-        <h3>About the author</h3>
-        <div class="grid two">
-          <div class="field">
-            <label for="author_name">Name</label>
-            <input type="text" id="author_name" name="author_name" value="{{ view.site.author.name or '' }}">
-          </div>
-          <div class="field">
-            <label for="author_location">Location</label>
-            <input type="text" id="author_location" name="author_location" value="{{ view.site.author.location or '' }}">
-          </div>
-        </div>
-        <div class="field">
-          <label for="author_tagline">Tagline</label>
-          <input type="text" id="author_tagline" name="author_tagline" value="{{ view.site.author.tagline or '' }}">
-        </div>
-        <div class="field">
-          <label for="author_email">Email people can write to</label>
-          <input type="email" id="author_email" name="author_email" value="{{ view.site.author.email or '' }}">
-        </div>
-      </div>
-      <div class="card">
-        <h3>Social links</h3>
-        <div class="grid three">
-          <div class="field">
-            <label for="social_github">GitHub</label>
-            <input type="url" id="social_github" name="social_github" value="{{ view.site.social.github or '' }}">
-          </div>
-          <div class="field">
-            <label for="social_strava">Strava</label>
-            <input type="url" id="social_strava" name="social_strava" value="{{ view.site.social.strava or '' }}">
-          </div>
-          <div class="field">
-            <label for="social_twitter">X / Twitter</label>
-            <input type="url" id="social_twitter" name="social_twitter" value="{{ view.site.social.twitter or '' }}">
-          </div>
-        </div>
-        <div class="small">Leave one empty and it simply won't be shown.</div>
-      </div>
-    </section>
-
-    <div class="bar">
-      <div class="inner">
-        <button class="btn save" type="submit" formaction="{{ url_for('do_save') }}">Save</button>
-        <button class="btn publish" type="submit" formaction="{{ url_for('do_publish') }}"
-                data-confirm="Publish these changes to the live site at runamile.co.uk?">Publish</button>
-        <a class="preview" href="{{ url_for('preview') }}" target="_blank" rel="noopener">See the preview →</a>
+      <div class="field">
+        <label for="profile_intro">Your story</label>
+        <textarea class="prose" id="profile_intro" name="profile_intro">{{ view.profile.intro or '' }}</textarea>
+        <div class="small">Leave a blank line between paragraphs. This is the long piece on the home page and the About page.</div>
       </div>
     </div>
-  </form>
-</div>
+  </section>
+
+  <!-- 2. Goal and numbers ---------------------------------------------- -->
+  <section class="panel" id="panel-goal" role="tabpanel">
+    <h2>Goal &amp; numbers</h2>
+    <p class="hint">The progress bar and the row of quick facts on the home page.</p>
+    <div class="card">
+      <h3>Your current goal</h3>
+      <div class="grid three">
+        <div class="field">
+          <label for="goal_label">What it's called</label>
+          <input type="text" id="goal_label" name="goal_label" value="{{ view.profile.goal.label or '' }}">
+        </div>
+        <div class="field">
+          <label for="goal_target">The target</label>
+          <input type="text" id="goal_target" name="goal_target" value="{{ view.profile.goal.target or '' }}">
+        </div>
+        <div class="field">
+          <label for="goal_progress">How far along (%)</label>
+          <input type="number" id="goal_progress" name="goal_progress" min="0" max="100"
+                 value="{{ view.profile.goal.progress if view.profile.goal.progress is not none else '' }}">
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Quick facts</h3>
+      {% for stat in view.profile.stats or [] %}
+        {{ stat_row(stat.label, stat.value) }}
+      {% endfor %}
+      {{ stat_row('', '') }}
+      <button type="button" class="addrow" data-add="stat">+ Add a number</button>
+    </div>
+  </section>
+
+  <!-- 3. Run log -------------------------------------------------------- -->
+  <section class="panel" id="panel-runs" role="tabpanel">
+    <h2>Run log</h2>
+    <p class="hint">One entry per run. Times like 21:40 are looked after — just type them as normal. Every run needs a distance.</p>
+    <div class="card">
+      <h3>New run</h3>
+      {{ run_row('', '', '', '', '') }}
+    </div>
+    {% for entry in view.training %}
+    <div class="card">
+      <h3>{{ entry.date }}</h3>
+      {{ run_row(entry.date, entry.distance, entry.duration, entry.pace, entry.notes) }}
+    </div>
+    {% endfor %}
+    <button type="button" class="addrow" data-add="run">+ Add another blank run</button>
+  </section>
+
+  <!-- 4. Site settings -------------------------------------------------- -->
+  <section class="panel" id="panel-site" role="tabpanel">
+    <h2>Site settings</h2>
+    <p class="hint">The title in the browser tab, what Google and WhatsApp see, and how people reach you.</p>
+    <div class="card">
+      <h3>The site itself</h3>
+      <div class="field">
+        <label for="site_title">Site name</label>
+        <input type="text" id="site_title" name="site_title" value="{{ view.site.title or '' }}">
+      </div>
+      <div class="field">
+        <label for="site_description">One-line description</label>
+        <input type="text" id="site_description" name="site_description" value="{{ view.site.description or '' }}">
+      </div>
+      <div class="field">
+        <label for="site_url">Web address</label>
+        <input type="url" id="site_url" name="site_url" value="{{ view.site.url or '' }}">
+      </div>
+      <div class="field">
+        <label for="seo_description">What search engines and shared links say</label>
+        <textarea id="seo_description" name="seo_description">{{ view.site.seo.description or '' }}</textarea>
+      </div>
+    </div>
+    <div class="card">
+      <h3>About the author</h3>
+      <div class="grid two">
+        <div class="field">
+          <label for="author_name">Name</label>
+          <input type="text" id="author_name" name="author_name" value="{{ view.site.author.name or '' }}">
+        </div>
+        <div class="field">
+          <label for="author_location">Location</label>
+          <input type="text" id="author_location" name="author_location" value="{{ view.site.author.location or '' }}">
+        </div>
+      </div>
+      <div class="field">
+        <label for="author_tagline">Tagline</label>
+        <input type="text" id="author_tagline" name="author_tagline" value="{{ view.site.author.tagline or '' }}">
+      </div>
+      <div class="field">
+        <label for="author_email">Email people can write to</label>
+        <input type="email" id="author_email" name="author_email" value="{{ view.site.author.email or '' }}">
+      </div>
+    </div>
+    <div class="card">
+      <h3>Social links</h3>
+      <div class="grid three">
+        <div class="field">
+          <label for="social_github">GitHub</label>
+          <input type="url" id="social_github" name="social_github" value="{{ view.site.social.github or '' }}">
+        </div>
+        <div class="field">
+          <label for="social_strava">Strava</label>
+          <input type="url" id="social_strava" name="social_strava" value="{{ view.site.social.strava or '' }}">
+        </div>
+        <div class="field">
+          <label for="social_twitter">X / Twitter</label>
+          <input type="url" id="social_twitter" name="social_twitter" value="{{ view.site.social.twitter or '' }}">
+        </div>
+      </div>
+      <div class="small">Leave one empty and it simply won't be shown.</div>
+    </div>
+  </section>
+
+  <div class="bar">
+    <div class="inner">
+      <button class="btn save" type="submit" formaction="{{ url_for('do_save') }}">Save</button>
+      <button class="btn publish" type="submit" formaction="{{ url_for('do_publish') }}"
+              data-confirm="Publish these changes to the live site at runamile.co.uk?">Publish</button>
+      <a class="preview" href="{{ url_for('preview') }}" target="_blank" rel="noopener">See the preview →</a>
+    </div>
+  </div>
+</form>
 
 <template id="tpl-stat">{{ stat_row('', '') }}</template>
-<template id="tpl-post">{{ post_row('', '', '', '') }}</template>
 <template id="tpl-run">{{ run_row('', '', '', '', '') }}</template>
+{% endblock %}
 
+{% block scripts %}
 <script>
 // Tabs
 const tabs = document.querySelectorAll('nav.tabs button');
@@ -296,12 +188,11 @@ tabs.forEach(tab => tab.addEventListener('click', () => {
 }));
 
 // Adding and removing blocks
-const tpl = { stat: 'tpl-stat', post: 'tpl-post', run: 'tpl-run' };
+const tpl = { stat: 'tpl-stat', run: 'tpl-run' };
 document.addEventListener('click', event => {
   const add = event.target.closest('[data-add]');
   if (add) {
-    const kind = add.dataset.add;
-    const node = document.getElementById(tpl[kind]).content.cloneNode(true);
+    const node = document.getElementById(tpl[add.dataset.add]).content.cloneNode(true);
     add.parentElement.insertBefore(node, add);
     const first = add.previousElementSibling.querySelector('input, textarea');
     if (first) first.focus();
@@ -310,23 +201,10 @@ document.addEventListener('click', event => {
   const kill = event.target.closest('.kill');
   if (kill) {
     const row = kill.closest('.row');
-    if (row.dataset.filled === 'yes' && !confirm('Delete this one? It will disappear from the site when you Save or Publish.')) return;
+    if (row.dataset.filled === 'yes' && !confirm('Delete this one? It disappears from the site when you Save or Publish.')) return;
     row.remove();
   }
 });
-
-// A tidy web address from the title, while the slug box is untouched
-document.addEventListener('input', event => {
-  const field = event.target;
-  if (field.name !== 'post_title') return;
-  const slug = field.closest('.row').querySelector('input[name="post_slug"]');
-  if (slug && !slug.dataset.touched) {
-    slug.value = field.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  }
-});
-document.addEventListener('input', event => {
-  if (event.target.name === 'post_slug') event.target.dataset.touched = 'yes';
-}, true);
 
 // Publishing is the one thing worth a second look
 const publish = document.querySelector('button.publish');
@@ -334,5 +212,4 @@ publish.addEventListener('click', event => {
   if (!confirm(publish.dataset.confirm)) event.preventDefault();
 });
 </script>
-</body>
-</html>
+{% endblock %}

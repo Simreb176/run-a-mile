@@ -28,7 +28,8 @@ gratuitously replace it.
 | `generate.py` | Reads YAML + templates, writes `docs/` | Only when adding pages/features |
 | `serve.py` | Rebuilds and serves the dev preview on port 8080 | Rarely |
 | `editor.py` | The owner's editing page (Flask) on port 9001. Writes `data/`, rebuilds, commits and pushes | Yes — it's part of the product |
-| `editor_templates/*.html` | The editing page's own screens (**not** the website's) | Yes |
+| `editor_templates/*.html` | The editing page's own screens: `base` (chrome), `editor` (details/goal/runs/settings), `posts` (the list), `post_form` (writing a post) | Yes |
+| `editor_static/editor.css` | The editing page's stylesheet (not the site's) | Yes |
 | `Makefile` | `make deploy` runs the editing page as a service; also `build`, `preview`, `status`, `logs` | Yes |
 | `deploy/runamile-editor.service` | The systemd unit for the editing page | Yes |
 | `docs/` | The **generated** output. Never hand-edit; it is overwritten on build | No (generated) |
@@ -71,8 +72,16 @@ words on the site:
   `0.0.0.0`-facing auth back without asking the owner; he explicitly wanted it
   out of the way.
 - It reads and writes the same `data/*.yml` files, so anything it does, you can
-  do — and vice versa. Its templates live in `editor_templates/` (keep website
-  templates out of that folder and the editor's out of `templates/`).
+  do — and vice versa. Its screens live in `editor_templates/` with their own
+  stylesheet in `editor_static/` (keep website templates out of those folders
+  and the editor's out of `templates/`).
+- Blog posts have their own screen (`/posts`): list, **Write a new post**,
+  **Edit**, **Delete**. The main screen covers details, goal, runs and site
+  settings only — don't move posts back into the one big form, the owner asked
+  for a writing page. Delete removes the entry *and* the generated
+  `docs/posts/<slug>/` (the build wipes `docs/`, so it really is gone).
+- The post date is "first written": editing a post must not change it unless
+  the owner changes the date field himself.
 - It writes YAML *gently*: unchanged values keep their comments and quoting, and
   `posts.yml` / `training.yml` are re-emitted in the same shape as the
   hand-written files. **A save that changes nothing must produce no diff** —

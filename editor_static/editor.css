@@ -1,0 +1,119 @@
+/* ==========================================================================
+   The editing page (<host>:9001) — shared by every screen.
+   Deliberately separate from the website's styles.css: this is a tool, not
+   the site, but it borrows the same colours so it feels like the same place.
+   ========================================================================== */
+
+:root{
+  --bg:#fdf9f4; --bg-alt:#f6efe6; --surface:#fff; --line:#ece2d4; --line-strong:#ddcebb;
+  --ink:#211c17; --muted:#6f6659; --faint:#948a7b;
+  --accent:#d9480f; --accent-strong:#b23c07; --accent-soft:#ffe8d6;
+  --good:#2f6f4f; --good-soft:#e3f3e9; --bad:#a4262c; --bad-soft:#fbe6e7;
+  --radius:14px; --radius-sm:9px;
+  --font-sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-serif:ui-serif,Georgia,Cambria,"Times New Roman",serif;
+  --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root{--bg:#14110e; --bg-alt:#1c1814; --surface:#1f1b16; --line:#2f2a23; --line-strong:#453d32;
+  --ink:#f4efe8; --muted:#b3a695; --faint:#8d8271; --accent:#f97e4a; --accent-strong:#ffa273;
+  --accent-soft:#38241a; --good:#7ed0a4; --good-soft:#1d2d24; --bad:#ff9a9a; --bad-soft:#33201f;}
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans);line-height:1.55}
+a{color:var(--accent-strong)}
+.wrap{max-width:900px;margin:0 auto;padding:20px 16px 140px}
+
+/* Header + the top-level nav ------------------------------------------------ */
+header.top{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:baseline;justify-content:space-between;
+  padding:8px 0 14px;border-bottom:1px solid var(--line);margin-bottom:18px}
+header.top h1{margin:0;font-size:1.35rem;font-family:var(--font-serif);font-weight:600}
+header.top h1 a{color:var(--ink);text-decoration:none}
+nav.site{display:flex;flex-wrap:wrap;gap:6px}
+nav.site a{font-size:.9rem;color:var(--muted);text-decoration:none;padding:6px 12px;border-radius:999px;
+  border:1px solid transparent}
+nav.site a:hover{background:var(--bg-alt);color:var(--ink)}
+nav.site a[aria-current="page"]{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* Notices ------------------------------------------------------------------- */
+.msg{border-radius:var(--radius-sm);padding:12px 14px;margin:14px 0;white-space:pre-wrap;font-size:.93rem}
+.msg.good{background:var(--good-soft);color:var(--good);border:1px solid var(--good)}
+.msg.bad{background:var(--bad-soft);color:var(--bad);border:1px solid var(--bad);
+  font-family:var(--font-mono);font-size:.86rem}
+.msg.warn{background:var(--accent-soft);color:var(--accent-strong);border:1px solid var(--accent)}
+.howto{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px 16px;margin:18px 0;color:var(--muted);font-size:.92rem}
+.howto strong{color:var(--ink)}
+
+/* Tabs, panels and cards ---------------------------------------------------- */
+nav.tabs{display:flex;gap:6px;overflow-x:auto;margin:0 0 4px;padding-bottom:2px}
+nav.tabs button{font:inherit;font-size:.92rem;white-space:nowrap;padding:9px 14px;border-radius:999px;
+  border:1px solid var(--line-strong);background:var(--surface);color:var(--muted);cursor:pointer}
+nav.tabs button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+section.panel{display:none;padding-top:22px}
+section.panel.on{display:block}
+section.panel > h2, h2.heading{font-size:1.05rem;font-family:var(--font-serif);margin:0 0 4px}
+section.panel > p.hint, p.hint{color:var(--muted);font-size:.9rem;margin:0 0 18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:16px;margin-bottom:16px}
+.card > h3{margin:0 0 12px;font-weight:600;color:var(--muted);letter-spacing:.02em;
+  text-transform:uppercase;font-size:.78rem}
+
+/* Forms --------------------------------------------------------------------- */
+label{display:block;font-size:.85rem;color:var(--muted);margin:0 0 4px;font-weight:500}
+input[type=text],input[type=url],input[type=email],input[type=number],input[type=date],textarea{
+  width:100%;font:inherit;font-size:.97rem;color:var(--ink);background:var(--bg-alt);
+  border:1px solid var(--line-strong);border-radius:var(--radius-sm);padding:10px 12px}
+textarea{resize:vertical;min-height:90px;line-height:1.65}
+textarea.prose{min-height:320px}
+input:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px;background:var(--surface)}
+.field{margin-bottom:14px}
+.grid{display:grid;gap:12px}
+@media (min-width:640px){.grid.two{grid-template-columns:1fr 1fr}.grid.three{grid-template-columns:1fr 1fr 1fr}}
+.small{font-size:.8rem;color:var(--faint);margin-top:4px}
+
+/* Repeatable rows (the run log) --------------------------------------------- */
+.row{border-top:1px dashed var(--line-strong);padding-top:14px;margin-top:14px;position:relative}
+.row:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.row .kill{position:absolute;top:10px;right:0;font:inherit;font-size:.8rem;color:var(--bad);
+  background:none;border:0;cursor:pointer;text-decoration:underline}
+.row .grid{margin-top:12px}
+.addrow{margin-top:16px;background:var(--accent-soft);border:1px dashed var(--accent);color:var(--accent-strong);
+  font:inherit;font-size:.9rem;font-weight:600;border-radius:var(--radius-sm);padding:9px 14px;cursor:pointer}
+
+/* Buttons and the sticky action bar ----------------------------------------- */
+button.btn,.btn{font:inherit;font-weight:600;border-radius:999px;padding:11px 22px;cursor:pointer;
+  border:1px solid transparent;text-decoration:none;display:inline-block}
+button.save{background:var(--bg-alt);border-color:var(--line-strong);color:var(--ink)}
+button.publish,.btn.primary{background:var(--accent);color:#fff}
+button.publish:hover,.btn.primary:hover{background:var(--accent-strong)}
+.btn.ghost{background:var(--surface);border-color:var(--line-strong);color:var(--ink)}
+.btn.small{padding:7px 14px;font-size:.85rem}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line-strong);
+  box-shadow:0 -6px 24px -18px rgba(0,0,0,.4);padding:12px 16px}
+.bar .inner{max-width:900px;margin:0 auto;display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+  justify-content:center}
+a.preview{color:var(--muted);font-size:.9rem}
+
+/* The blog posts list ------------------------------------------------------- */
+.section-head{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;
+  margin:0 0 14px}
+.section-head .heading{margin:0}
+.post-list{display:grid;gap:12px;margin-bottom:18px}
+.post-item{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:16px 18px;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:flex-start;
+  justify-content:space-between}
+.post-item .body{flex:1 1 320px;min-width:0}
+.post-item h3{margin:0;font-family:var(--font-serif);font-size:1.12rem;font-weight:700;line-height:1.25}
+.post-item time{display:block;margin-top:3px;font-size:.8rem;color:var(--faint);
+  letter-spacing:.04em;text-transform:uppercase}
+.post-item .excerpt{margin:8px 0 0;font-size:.9rem;color:var(--muted);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.post-item .actions{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.post-item .actions form{margin:0}
+button.danger{background:none;border:1px solid transparent;color:var(--bad);font:inherit;font-size:.85rem;
+  padding:7px 12px;border-radius:999px;cursor:pointer;text-decoration:underline}
+button.danger:hover{background:var(--bad-soft)}
+.post-list-empty{color:var(--muted);background:var(--surface);border:1px dashed var(--line-strong);
+  border-radius:var(--radius);padding:22px;text-align:center}

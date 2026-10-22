@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex">
+<title>{% block title %}Edit runamile.co.uk{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='editor.css') }}">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1><a href="{{ url_for('home') }}">Edit runamile.co.uk</a></h1>
+    <nav class="site" aria-label="Editing pages">
+      <a href="{{ url_for('home') }}" {% if page == 'site' %}aria-current="page"{% endif %}>Your site</a>
+      <a href="{{ url_for('posts') }}" {% if page == 'posts' %}aria-current="page"{% endif %}>Blog posts</a>
+      <a href="{{ url_for('preview') }}" target="_blank" rel="noopener">Preview</a>
+      <a href="{{ live_url }}" target="_blank" rel="noopener">Live site</a>
+    </nav>
+  </header>
+
+  {% for category, message in get_flashed_messages(with_categories=true) %}
+  <div class="msg {{ 'good' if category == 'good' else 'bad' if category == 'bad' else 'warn' }}">{{ message }}</div>
+  {% endfor %}
+
+  {% block content %}{% endblock %}
+</div>
+{% block scripts %}{% endblock %}
+</body>
+</html>

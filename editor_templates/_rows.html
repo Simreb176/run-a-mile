@@ -17,32 +17,6 @@
 </div>
 {%- endmacro %}
 
-{% macro post_row(date, title, slug, body) -%}
-<div class="row" data-filled="{{ 'yes' if (title or date or body) else 'no' }}">
-  <button type="button" class="kill" aria-label="Remove this post">Remove</button>
-  <div class="grid two">
-    <div class="field">
-      <label>Title</label>
-      <input type="text" name="post_title" value="{{ title or '' }}" placeholder="A Good Run Today">
-    </div>
-    <div class="field">
-      <label>Date (YYYY-MM-DD)</label>
-      <input type="text" name="post_date" value="{{ date or today }}" placeholder="{{ today }}">
-    </div>
-  </div>
-  <div class="field">
-    <label>Web address</label>
-    <input type="text" name="post_slug" value="{{ slug or '' }}" placeholder="a-good-run-today">
-    <div class="small">Filled in from the title as you type. Never reuse one that's been published.</div>
-  </div>
-  <div class="field">
-    <label>Post</label>
-    <textarea class="prose" name="post_body" placeholder="Write it the way you'd say it. Blank line between paragraphs.">{{ body or '' }}</textarea>
-    <div class="small">**bold**, *italic*, [links](https://example.com) and ## headings all work.</div>
-  </div>
-</div>
-{%- endmacro %}
-
 {% macro run_row(date, distance, duration, pace, notes) -%}
 <div class="row" data-filled="{{ 'yes' if (date or distance) else 'no' }}">
   <button type="button" class="kill" aria-label="Remove this run">Remove</button>

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit post' if editing else 'Write a post' }} &middot; Edit runamile.co.uk{% endblock %}
+
+{% block content %}
+{% if error %}<div class="msg bad">{{ error }}</div>{% endif %}
+
+<h2 class="heading">{{ 'Edit “' ~ post.title ~ '”' if editing else 'Write a new post' }}</h2>
+<p class="hint">
+  {% if editing %}
+    Change whatever you like and press Save. The date stays where it is unless you change it,
+    so the post keeps its place in the list.
+  {% else %}
+    The title is the heading, in bold. The date sits underneath it in smaller text.
+  {% endif %}
+</p>
+
+<form method="post" action="{{ url_for('post_save') }}">
+  <input type="hidden" name="original_slug" value="{{ post.slug if editing else '' }}">
+
+  <div class="card">
+    <div class="field">
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" value="{{ post.title }}" autofocus
+             placeholder="Back on the road">
+    </div>
+
+    <div class="grid two">
+      <div class="field">
+        <label for="date">First written</label>
+        <input type="text" id="date" name="date" value="{{ post.date }}" placeholder="2026-10-22">
+        <div class="small">Year-month-day, e.g. 2026-10-22. It's the date shown under the title.</div>
+      </div>
+      <div class="field">
+        <label for="slug">Web address</label>
+        <input type="text" id="slug" name="slug" value="{{ post.slug }}" placeholder="back-on-the-road">
+        <div class="small">runamile.co.uk/posts/<span id="slug-preview">{{ post.slug }}</span>/</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="body">The post</label>
+      <textarea class="prose" id="body" name="body" spellcheck="true"
+                placeholder="Write it the way you'd say it. Leave a blank line between paragraphs.">{{ post.body }}</textarea>
+      <div class="small">
+        Blank line between paragraphs. **bold**, *italic*, [links](https://example.com),
+        ## a smaller heading, - a bullet list and &gt; a quote all work.
+      </div>
+    </div>
+  </div>
+
+  <div class="bar">
+    <div class="inner">
+      <button class="btn publish" type="submit">Save</button>
+      <a class="preview" href="{{ url_for('posts') }}">Cancel</a>
+    </div>
+  </div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Fill in the web address from the title while it hasn't been touched.
+const title = document.getElementById('title');
+const slug = document.getElementById('slug');
+const preview = document.getElementById('slug-preview');
+const tidy = text => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+title.addEventListener('input', () => {
+  if (!slug.dataset.touched) slug.value = tidy(title.value);
+  preview.textContent = slug.value || tidy(title.value);
+});
+slug.addEventListener('input', () => {
+  slug.dataset.touched = 'yes';
+  preview.textContent = slug.value;
+});
+</script>
+{% endblock %}

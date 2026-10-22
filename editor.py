@@ -43,7 +43,6 @@ from pathlib import Path
 from flask import (
     Flask,
     flash,
-    get_flashed_messages,
     redirect,
     render_template,
     request,
@@ -299,29 +298,6 @@ def save_profile(form, progress):
     dump(DATA / "profile.yml", profile)
 
 
-def save_posts(rows, problems):
-    posts = []
-    used = {}
-    for row in rows:
-        date_text = clean_date(row["post_date"], f"The post “{row['post_title']}”", problems)
-        slug = slugify(row["post_slug"]) or slugify(row["post_title"]) or f"post-{date_text}"
-        if slug in used:  # two posts with the same address would overwrite each other
-            used[slug] += 1
-            slug = f"{slug}-{used[slug]}"
-        else:
-            used[slug] = 1
-        posts.append(
-            {
-                "date": date_text,
-                "title": row["post_title"],
-                "slug": slug,
-                "body": row["post_body"],
-            }
-        )
-    posts.sort(key=lambda post: post["date"], reverse=True)
-    return posts
-
-
 def save_training(rows, problems):
     runs = []
     for row in rows:
@@ -347,10 +323,6 @@ def save_from_form(form):
     if progress and not re.fullmatch(r"\d{1,3}", progress):
         problems.append(f"The goal percentage needs to be a whole number, not “{progress}”")
 
-    posts = save_posts(
-        form_rows(form, ["post_title", "post_date", "post_slug", "post_body"], essential="post_title"),
-        problems,
-    )
     runs = save_training(
         form_rows(form, ["run_date", "run_distance", "run_duration", "run_pace", "run_notes"],
                   essential="run_distance"),
@@ -359,11 +331,50 @@ def save_from_form(form):
     if problems:
         raise EditorError("Nothing was saved, because of this:\n\n" + "\n".join(f"• {p}" for p in problems))
 
-    write_rows_file(DATA / "posts.yml", posts, block_keys=("body",))
     write_rows_file(DATA / "training.yml", runs)
     save_site(form)
     save_profile(form, progress)
-    return len(posts), len(runs)
+    return len(runs)
+
+
+# --------------------------------------------------------------------------
+# Blog posts — their own screen, so a post is written rather than listed
+# --------------------------------------------------------------------------
+def load_posts():
+    posts = []
+    for row in load(DATA / "posts.yml"):
+        body = normalise(row.get("body") or "")
+        first_line = next((line.strip() for line in body.splitlines() if line.strip()), "")
+        posts.append(
+            {
+                "date": str(row.get("date", "")),
+                "title": str(row.get("title", "")),
+                "slug": str(row.get("slug", "")),
+                "body": body,
+                "excerpt": first_line,
+            }
+        )
+    posts.sort(key=lambda post: post["date"], reverse=True)
+    return posts
+
+
+def write_posts(posts):
+    write_rows_file(
+        DATA / "posts.yml",
+        [{key: post[key] for key in ("date", "title", "slug", "body")} for post in posts],
+        block_keys=("body",),
+    )
+
+
+def free_slug(candidate, taken):
+    """Never let two posts share a web address: they would overwrite each other."""
+    slug, number = candidate, 1
+    while slug in taken:
+        number += 1
+        slug = f"{candidate}-{number}"
+    return slug
+
+
 
 
 # --------------------------------------------------------------------------
@@ -447,8 +458,28 @@ def read_or_create(path, factory):
     return path.read_text(encoding="utf-8").strip()
 
 
-app = Flask(__name__, template_folder=str(TEMPLATES))
+app = Flask(
+    __name__,
+    template_folder=str(TEMPLATES),
+    static_folder=str(ROOT / "editor_static"),
+    static_url_path="/static",
+)
 app.secret_key = read_or_create(SECRET_FILE, lambda: secrets.token_hex(32))
+
+
+@app.template_filter("friendly_date")
+def friendly_date(value):
+    """2026-10-22 -> 22 October 2026, for the posts screen."""
+    try:
+        return date.fromisoformat(str(value)).strftime("%-d %B %Y")
+    except ValueError:
+        return str(value)
+
+
+@app.context_processor
+def editor_context():
+    site = load(DATA / "site.yml")
+    return {"live_url": site.get("url") or "https://runamile.co.uk", "page": "site"}
 
 
 # --------------------------------------------------------------------------
@@ -461,27 +492,24 @@ def model():
     return {
         "site": load(DATA / "site.yml"),
         "profile": load(DATA / "profile.yml"),
-        "posts": newest(load(DATA / "posts.yml")),
         "training": newest(load(DATA / "training.yml")),
     }
 
 
 @app.get("/")
 def home():
-    data = model()
     return render_template(
         "editor.html",
-        view=data,
+        view=model(),
         today=date.today().isoformat(),
-        live_url=data["site"].get("url") or "https://runamile.co.uk",
-        messages=get_flashed_messages(with_categories=True),
+        page="site",
     )
 
 
 @app.post("/save")
 def do_save():
     try:
-        posts, runs = save_from_form(request.form)
+        runs = save_from_form(request.form)
     except EditorError as error:
         flash(str(error), "bad")
         return redirect(url_for("home"))
@@ -491,16 +519,115 @@ def do_save():
 
     ok, output = rebuild()
     if ok:
-        flash(f"Saved — {posts} posts and {runs} runs. Have a look at the preview.", "good")
+        flash(f"Saved — {runs} runs. Have a look at the preview.", "good")
     else:
         flash(f"Saved, but the site didn't rebuild:\n\n{output}", "bad")
     return redirect(url_for("home"))
+
+
+# --- blog posts -----------------------------------------------------------
+@app.get("/posts")
+def posts():
+    return render_template("posts.html", posts=load_posts(), page="posts")
+
+
+@app.get("/posts/new")
+def post_new():
+    return render_template(
+        "post_form.html",
+        post={"title": "", "date": date.today().isoformat(), "slug": "", "body": ""},
+        editing=False,
+        page="posts",
+    )
+
+
+@app.get("/posts/<slug>/edit")
+def post_edit(slug):
+    found = next((post for post in load_posts() if post["slug"] == slug), None)
+    if not found:
+        flash("That post isn't there any more.", "warn")
+        return redirect(url_for("posts"))
+    return render_template("post_form.html", post=found, editing=True, page="posts")
+
+
+@app.post("/posts/save")
+def post_save():
+    form = request.form
+    original = normalise(form.get("original_slug", "")).strip()
+    title = normalise(form.get("title", "")).strip()
+    written = normalise(form.get("date", "")).strip()
+    body = normalise(form.get("body", "")).strip("\n")
+    editing = bool(original)
+
+    problems = []
+    if not title:
+        problems.append("A post needs a title.")
+    if not DATE_RE.match(written):
+        problems.append("The date needs to look like 2026-10-22.")
+
+    slug = slugify(form.get("slug", "")) or original or slugify(title) or f"post-{written}"
+
+    if problems:
+        return (
+            render_template(
+                "post_form.html",
+                post={"title": title, "date": written, "slug": slug, "body": body},
+                editing=editing,
+                page="posts",
+                error=" ".join(problems),
+            ),
+            400,
+        )
+
+    others = [post for post in load_posts() if post["slug"] != original]
+    slug = free_slug(slug, {post["slug"] for post in others})
+
+    entry = {"date": written, "title": title, "slug": slug, "body": body, "excerpt": ""}
+    if editing:
+        remaining = [entry if post["slug"] == original else post for post in load_posts()]
+    else:
+        remaining = load_posts() + [entry]
+    remaining.sort(key=lambda post: post["date"], reverse=True)
+    write_posts(remaining)
+
+    ok, output = rebuild()
+    if not ok:
+        flash(f"Saved, but the site didn't rebuild:\n\n{output}", "bad")
+    elif editing:
+        flash("Saved your changes. Press Publish when you're ready for them to go live.", "good")
+    else:
+        flash("Written and added to the blog. Press Publish when you're ready for it to go live.", "good")
+    return redirect(url_for("posts"))
+
+
+@app.post("/posts/delete")
+def post_delete():
+    slug = normalise(request.form.get("slug", "")).strip()
+    posts = load_posts()
+    doomed = next((post for post in posts if post["slug"] == slug), None)
+    if not doomed:
+        flash("That post was already gone.", "warn")
+        return redirect(url_for("posts"))
+
+    write_posts([post for post in posts if post["slug"] != slug])
+    ok, output = rebuild()
+    if ok:
+        flash(
+            f"“{doomed['title']}” was deleted, along with its page. "
+            "Press Publish to take it off the live site.",
+            "good",
+        )
+    else:
+        flash(f"Deleted, but the site didn't rebuild:\n\n{output}", "bad")
+    return redirect(url_for("posts"))
 
 
 @app.post("/publish")
 def do_publish():
     ok, message = publish()
     flash(message, "good" if ok else "bad")
+    if request.referrer and request.referrer.rstrip("/").endswith("/posts"):
+        return redirect(url_for("posts"))
     return redirect(url_for("home"))
 
 

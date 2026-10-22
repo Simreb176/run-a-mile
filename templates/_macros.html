@@ -6,8 +6,8 @@
 
 {% macro post_card(post, base) %}
 <a class="post-card" href="{{ base }}posts/{{ post.slug }}/">
-  <time datetime="{{ post.date.strftime('%Y-%m-%d') }}">{{ post.date.strftime('%d %B %Y') }}</time>
   <h3>{{ post.title }}</h3>
+  <time datetime="{{ post.date.strftime('%Y-%m-%d') }}">{{ post.date.strftime('%d %B %Y') }}</time>
   <p>{{ post.excerpt }}</p>
   <span class="read-more">Read the post &rarr;</span>
 </a>
