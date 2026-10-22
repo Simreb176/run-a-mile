@@ -9,6 +9,12 @@
 #               (see requirements.txt) — **bold**, *italic*, [links](...), etc.
 #               Without it, paragraphs are still rendered, just without styling.
 
+- date: 2026-10-22
+  title: Supplements
+  slug: supplements
+  body: |
+    I’ve given up all supplements.  Why?
+
 - date: 2026-10-12
   title: Hello, World (Again)
   slug: hello-world
