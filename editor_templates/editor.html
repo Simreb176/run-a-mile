@@ -21,7 +21,9 @@
   <!-- 1. Your details -------------------------------------------------- -->
   <section class="panel on" id="panel-details" role="tabpanel">
     <h2>Your details</h2>
-    <p class="hint">These words appear at the top of the home page and all over the About page.</p>
+    <p class="hint">These words appear at the top of the home page and all over the About page.
+      The line at the bottom of every page is on
+      <a href="#" data-goto="site">Site settings</a>.</p>
     <div class="card">
       <div class="field">
         <label for="profile_eyebrow">The small line above your name</label>
@@ -190,6 +192,13 @@ tabs.forEach(tab => tab.addEventListener('click', () => {
   document.querySelectorAll('section.panel').forEach(p => p.classList.remove('on'));
   document.getElementById('panel-' + tab.dataset.tab).classList.add('on');
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}));
+
+// In-text links that jump to another tab ("the footer line is on Site settings")
+document.querySelectorAll('[data-goto]').forEach(link => link.addEventListener('click', event => {
+  event.preventDefault();
+  const target = document.querySelector(`nav.tabs button[data-tab="${link.dataset.goto}"]`);
+  if (target) target.click();
 }));
 
 // Adding and removing blocks
