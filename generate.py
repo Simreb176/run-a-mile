@@ -39,6 +39,7 @@ PRESERVE = {"CNAME", ".nojekyll"}
 PAGES = {
     "index.html": ("index.html", "home"),
     "blog.html": ("blog.html", "blog"),
+    "log.html": ("log.html", "log"),
     "about.html": ("about.html", "about"),
 }
 
@@ -129,7 +130,7 @@ def main():
         older = posts[i + 1] if i < len(posts) - 1 else None
         template = env.get_template("post.html")
         html = template.render(
-            post=post, newer=newer, older=older, base="../", page="post", **context
+            post=post, newer=newer, older=older, base="../../", page="post", **context
         )
         write(OUTPUT / "posts" / post["slug"] / "index.html", html)
         print(f"  posts/{post['slug']}/index.html")

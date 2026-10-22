@@ -131,8 +131,8 @@ The design lives in two places, both editable in plain English:
   button, link and highlight at once.
 - **`templates/`** — the layout of each page. `base.html` is the header and
   footer that appear everywhere; `index.html` is the home page; `blog.html` is
-  the list of posts and the training log; `post.html` is the page for a single
-  post; `about.html` is the About page.
+  the list of posts; `log.html` is the training log; `post.html` is the page for
+  a single post; `about.html` is the About page.
 
 The site also switches to a **dark theme** automatically for visitors whose
 phone or computer is set to dark mode, and adapts to phones and tablets on its

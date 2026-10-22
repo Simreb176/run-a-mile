@@ -41,7 +41,8 @@
 
       <nav class="site-nav" aria-label="Primary">
         <a href="{{ base }}index.html" {% if page == 'home' %}aria-current="page"{% endif %}>Home</a>
-        <a href="{{ base }}blog.html" {% if page == 'blog' %}aria-current="page"{% endif %}>Blog &amp; Log</a>
+        <a href="{{ base }}blog.html" {% if page == 'blog' %}aria-current="page"{% endif %}>Blog</a>
+        <a href="{{ base }}log.html" {% if page == 'log' %}aria-current="page"{% endif %}>Log</a>
         <a href="{{ base }}about.html" {% if page == 'about' %}aria-current="page"{% endif %}>About</a>
       </nav>
     </div>
@@ -73,7 +74,8 @@
         <h4>Explore</h4>
         <ul>
           <li><a href="{{ base }}index.html">Home</a></li>
-          <li><a href="{{ base }}blog.html">Blog &amp; Log</a></li>
+          <li><a href="{{ base }}blog.html">Blog</a></li>
+          <li><a href="{{ base }}log.html">Log</a></li>
           <li><a href="{{ base }}about.html">About</a></li>
         </ul>
       </div>

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-{% from "_macros.html" import post_card, run_table %}
-{% block title %}Blog &amp; Training Log &middot; {{ site.title }}{% endblock %}
-{% block description %}Every post and every run — the full story of getting back into running.{% endblock %}
+{% from "_macros.html" import post_card %}
+{% block title %}Blog &middot; {{ site.title }}{% endblock %}
+{% block description %}Every post about getting back into running — the thinking behind the miles.{% endblock %}
 {% block og_path %}blog.html{% endblock %}
 {% block canonical_path %}blog.html{% endblock %}
 
@@ -9,8 +9,9 @@
 <div class="wrap">
   <header class="page-head">
     <p class="eyebrow">The full story</p>
-    <h1>Blog &amp; Training Log</h1>
-    <p>Every post I've written and every run I've logged, newest first.</p>
+    <h1>The blog</h1>
+    <p>Every post I've written, newest first. The day-to-day miles live in the
+      <a href="{{ base }}log.html">training log</a>.</p>
   </header>
 
   <section aria-labelledby="posts-heading">
@@ -25,14 +26,6 @@
       <p class="lede">No posts yet — check back soon.</p>
       {% endfor %}
     </div>
-  </section>
-
-  <section class="section" id="log" aria-labelledby="log-heading">
-    <div class="section-head">
-      <h2 id="log-heading">Training log</h2>
-      <span class="pill">{{ training | length }} {{ 'run' if training | length == 1 else 'runs' }}</span>
-    </div>
-    {{ run_table(training, base) }}
   </section>
 </div>
 {% endblock %}

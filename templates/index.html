@@ -46,9 +46,9 @@
   <section class="section" aria-labelledby="runs-heading">
     <div class="section-head">
       <h2 id="runs-heading">Recent runs</h2>
-      <a class="more" href="{{ base }}blog.html#log">Full training log &rarr;</a>
+      <a class="more" href="{{ base }}log.html">Full training log &rarr;</a>
     </div>
-    {{ run_table(training[:5], base) }}
+    {{ run_table(training[:5], base, 'The most recent runs.') }}
   </section>
 </div>
 {% endblock %}

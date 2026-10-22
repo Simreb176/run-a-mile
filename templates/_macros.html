@@ -5,7 +5,7 @@
    ========================================================================= #}
 
 {% macro post_card(post, base) %}
-<a class="post-card" href="{{ base }}posts/{{ post.slug }}/index.html">
+<a class="post-card" href="{{ base }}posts/{{ post.slug }}/">
   <time datetime="{{ post.date.strftime('%Y-%m-%d') }}">{{ post.date.strftime('%d %B %Y') }}</time>
   <h3>{{ post.title }}</h3>
   <p>{{ post.excerpt }}</p>
@@ -13,9 +13,9 @@
 </a>
 {% endmacro %}
 
-{% macro run_table(training, base) %}
+{% macro run_table(training, base, caption='Every run, newest first.') %}
 <table class="log-table">
-  <caption>Every run, newest first.</caption>
+  <caption>{{ caption }}</caption>
   <thead>
     <tr>
       <th scope="col">Date</th>

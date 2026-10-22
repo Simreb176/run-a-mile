@@ -26,10 +26,10 @@
 
     <nav class="post-nav" aria-label="More posts">
       {% if newer %}
-      <a class="newer" href="{{ base }}posts/{{ newer.slug }}/index.html">&larr; {{ newer.title }}</a>
+      <a class="newer" href="{{ base }}posts/{{ newer.slug }}/">&larr; {{ newer.title }}</a>
       {% else %}<span></span>{% endif %}
       {% if older %}
-      <a class="older" href="{{ base }}posts/{{ older.slug }}/index.html">{{ older.title }} &rarr;</a>
+      <a class="older" href="{{ base }}posts/{{ older.slug }}/">{{ older.title }} &rarr;</a>
       {% endif %}
     </nav>
   </article>

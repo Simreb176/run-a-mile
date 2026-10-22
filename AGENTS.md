@@ -23,7 +23,7 @@ gratuitously replace it.
 | Path | What it is | You edit it? |
 |------|-----------|--------------|
 | `data/*.yml` | All the content (posts, runs, profile, site settings) | Yes — for content |
-| `templates/*.html` | Jinja2 layouts: `base` (chrome), `index`, `blog`, `post`, `about`, `_macros` (shared bits) | Yes — for layout |
+| `templates/*.html` | Jinja2 layouts: `base` (chrome), `index`, `blog`, `log`, `post`, `about`, `_macros` (shared bits) | Yes — for layout |
 | `styles.css` | All the styling. Section 1 holds every colour/type token | Yes — for appearance |
 | `generate.py` | Reads YAML + templates, writes `docs/` | Only when adding pages/features |
 | `serve.py` | Rebuilds and serves the dev preview on port 8080 | Rarely |
@@ -179,6 +179,10 @@ He is the ideas person; you are the hands. Keep these habits:
 - **Change the home page** → `templates/index.html`.
 - **Add a whole new page** → create `templates/<name>.html`, add it to `PAGES`
   in `generate.py`, and add a link in the nav in `templates/base.html`.
+- **Anything that links to a post** → `posts/<slug>/` with the trailing slash
+  (not `.../index.html`), and post pages are rendered with `base="../../"`
+  because they sit two directories deep. Get either wrong and the post pages
+  lose their stylesheet and every nav link 404s.
 
 ### YAML rules that bite (check these when a build fails)
 
@@ -192,9 +196,11 @@ He is the ideas person; you are the hands. Keep these habits:
 
 1. Site builds: `.venv/bin/python generate.py` prints no errors.
 2. Preview looks right at http://simon-dev.rebecchi.uk:8080, including the blog
-   list, a single post page, and the about page on a narrow screen.
+   list, the training log, a single post page, and the about page on a narrow
+   screen.
 3. Links and stylesheet resolve on **post pages** (they live at
-   `/posts/<slug>/`, so every link must be prefixed with `base`).
+   `/posts/<slug>/`, so every link must be prefixed with `base`). Worth crawling
+   the preview: a wrong `base` silently breaks every post page.
 4. `EDITING.md` updated if you changed anything the owner can now edit — and if
    you changed `data/`, check his editing page still shows the change (and that
    saving it again writes the same files back).

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% from "_macros.html" import run_table %}
+{% block title %}Training Log &middot; {{ site.title }}{% endblock %}
+{% block description %}Every run on the way back to running — distance, time and pace, newest first.{% endblock %}
+{% block og_path %}log.html{% endblock %}
+{% block canonical_path %}log.html{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  <header class="page-head">
+    <p class="eyebrow">Miles in the bank</p>
+    <h1>Training log</h1>
+    <p>Every run I've logged, newest first. The thinking behind them is in the
+      <a href="{{ base }}blog.html">blog</a>.</p>
+  </header>
+
+  <section aria-labelledby="log-heading">
+    <div class="section-head">
+      <h2 id="log-heading">Runs</h2>
+      <span class="pill">{{ training | length }} {{ 'run' if training | length == 1 else 'runs' }}</span>
+    </div>
+    {{ run_table(training, base) }}
+  </section>
+</div>
+{% endblock %}
