@@ -3,7 +3,7 @@
 # contact details, social links, and the SEO block used for search engines).
 
 title: Run A Mile
-description: One man's return to running — the story, the training log, and the miles.
+description: One man's return to running — the story, the training log, and the m1le.
 
 # The public URL once the custom domain is attached (runamile.co.uk).
 # Used for SEO tags and sharing cards.
@@ -12,8 +12,8 @@ url: https://runamile.co.uk
 author:
   name: Simon Rebecchi
   # Short line shown under the site title.
-  tagline: Documenting my return to running, one mile at a time.
-  location: Nottingham, UK
+  tagline: Documenting my return to running, one run/walk at a time.
+  location: Baildon, UK
   email: si@runamile.co.uk
 
 # Social links. Leave a value empty and it simply won't be linked.
@@ -24,4 +24,4 @@ social:
 
 # Search engine / sharing description. Update this when the story changes.
 seo:
-  description: "A blog and training log documenting a return to running — from the first hesitant mile to the first finish line."
+  description: "A blog and training log documenting a return to running — from the first hesitant run to the first mile."
