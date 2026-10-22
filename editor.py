@@ -614,7 +614,8 @@ def post_delete():
     if ok:
         flash(
             f"“{doomed['title']}” was deleted, along with its page. "
-            "Press Publish to take it off the live site.",
+            "Press Publish to take it off the live site — GitHub needs a few minutes to "
+            "rebuild, and the old address can linger for up to ten minutes after that.",
             "good",
         )
     else:
