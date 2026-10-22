@@ -57,17 +57,17 @@ intro: |2
 # Your target. `progress` is a percentage (0-100) used for the goal bar on the
 # home page. Update it as you go.
 goal:
-  label: First 5K
-  target: 5K
-  progress: 35
+  label: First mile
+  target: 1 mile
+  progress: 0
 
 # Fun facts / quick stats shown on the home page.
 stats:
   - label: Weeks back
-    value: 6
+    value: 0
   - label: Longest run
-    value: "3.2 km"
+    value: "0 mile"
   - label: Runs completed
-    value: 18
+    value: 0
   - label: Coffees earned
-    value: 18
+    value: 0
