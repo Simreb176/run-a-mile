@@ -65,7 +65,7 @@ line up belong together. When in doubt, copy the shape of the block above.
 | `data/posts.yml` | Your blog posts (newest at the top) |
 | `data/training.yml` | Your running log — one entry per run |
 | `data/profile.yml` | Your name, tagline, story, goal and home-page stats |
-| `data/site.yml` | The site title, description, contact email and social links |
+| `data/site.yml` | The site title, description, the footer line, contact email and social links |
 
 ## Writing, editing and deleting a blog post
 
