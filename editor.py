@@ -425,7 +425,10 @@ def publish():
             "Your changes are safe on this computer, but couldn't be sent to the live "
             f"site.\n\n{push.stdout}{push.stderr}"
         )
-    return True, "Published. runamile.co.uk updates itself in about a minute."
+    return True, (
+        "Uploaded. runamile.co.uk usually updates within a minute or two — "
+        "sometimes longer when GitHub is busy. The preview shows your changes straight away."
+    )
 
 
 def port_is_open(port):
