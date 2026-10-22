@@ -137,6 +137,17 @@ issues or PRs, use a fine-grained, read-only token scoped to this one repo.
 If a run fails, the usual cause is a YAML typo in `data/`; the build log names
 the file and line. Fix it, commit and push again.
 
+**Don't push while the owner's publish is still building.** The workflow uses
+`concurrency: cancel-in-progress`, so any push cancels a run that is queued or
+in flight — including the deploy for something he just deleted. If he has just
+pressed Publish, either wait for that run to go green or batch your change into
+the same push.
+
+**A deleted page can linger.** GitHub Pages serves HTML with
+`cache-control: max-age=600`, so an address that no longer exists can keep
+answering 200 from the edge for up to ten minutes after the deploy. Check the
+blog list (rebuilt in the same deploy) before concluding a delete failed.
+
 > First-time setup already done: the repo exists, Pages is set to
 > **GitHub Actions**, the `CNAME` file points at `runamile.co.uk`, and DNS is
 > pointed at GitHub. You should not need to touch any of that.
