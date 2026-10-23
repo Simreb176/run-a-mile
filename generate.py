@@ -43,6 +43,14 @@ PAGES = {
     "about.html": ("about.html", "about"),
 }
 
+# The social links shown in the footer and on the About page, in this order.
+# Add or remove networks here; the labels are what visitors see.
+SOCIAL_LINKS = [
+    ("instagram", "Instagram"),
+    ("facebook", "Facebook"),
+    ("strava", "Strava"),
+]
+
 
 def load_yaml(path):
     with open(path) as f:
@@ -103,6 +111,11 @@ def main():
         "profile": profile,
         "posts": posts,
         "training": training,
+        "social_links": [
+            {"name": label, "url": (site.get("social") or {}).get(key)}
+            for key, label in SOCIAL_LINKS
+            if (site.get("social") or {}).get(key)
+        ],
         "year": datetime.now().year,
     }
 

@@ -33,13 +33,11 @@
   {{ goal_card(profile.goal) }}
   {% endif %}
 
-  {% if site.social.github or site.social.strava or site.social.twitter %}
+  {% if social_links %}
   <section class="section">
     <div class="section-head"><h2>Follow along</h2></div>
     <p class="lede">
-      {% if site.social.strava %}<a href="{{ site.social.strava }}">Strava</a>{% endif %}
-      {% if site.social.github %}{% if site.social.strava %} &middot; {% endif %}<a href="{{ site.social.github }}">GitHub</a>{% endif %}
-      {% if site.social.twitter %}{% if site.social.strava or site.social.github %} &middot; {% endif %}<a href="{{ site.social.twitter }}">Twitter</a>{% endif %}
+      {% for link in social_links %}{% if not loop.first %} &middot; {% endif %}<a href="{{ link.url }}">{{ link.name }}</a>{% endfor %}
     </p>
   </section>
   {% endif %}

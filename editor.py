@@ -248,7 +248,7 @@ def save_site(form):
     set_value(author, "email", normalise(form.get("author_email")).strip())
 
     social = site.get("social") or {}
-    for network in ("github", "strava", "twitter"):
+    for network in ("instagram", "facebook", "strava"):
         value = normalise(form.get(f"social_{network}")).strip()
         set_value(social, network, value or None)
 

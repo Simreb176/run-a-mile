@@ -83,9 +83,7 @@
       <div class="footer-col">
         <h4>Elsewhere</h4>
         <ul>
-          {% if site.social.github %}<li><a href="{{ site.social.github }}">GitHub</a></li>{% endif %}
-          {% if site.social.strava %}<li><a href="{{ site.social.strava }}">Strava</a></li>{% endif %}
-          {% if site.social.twitter %}<li><a href="{{ site.social.twitter }}">Twitter</a></li>{% endif %}
+          {% for link in social_links %}<li><a href="{{ link.url }}">{{ link.name }}</a></li>{% endfor %}
           {% if site.author.email %}<li><a href="mailto:{{ site.author.email }}">Email</a></li>{% endif %}
         </ul>
       </div>
