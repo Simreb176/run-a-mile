@@ -9,19 +9,36 @@
 #               (see requirements.txt) — **bold**, *italic*, [links](...), etc.
 #               Without it, paragraphs are still rendered, just without styling.
 
-- date: 2026-10-22
+- date: 2026-10-23
+  title: So why are blog?
+  slug: so-why-are-blog
+  body: |
+    Blogs are so Personal and I would like to share and record my journey back to running or jogging, depending on your point of view.
+
+    I have been diagnosed with moderate to severe osteoarthritis in my right hip and been told I need a full hip replacement.
+
+    “I’m not ready for that”
+
+    I have always been reasonably active and enjoyed playing many different sports over my life.  I like walking and see myself as a jogger rather than a runner.
+
+    This blog is mainly to record how I get back to running just 1 mile, or jogging. This may seem a lot to some but I have missed it over the last six months.
+
+    I have recently read reports saying that if you have been a runner/jogger most of your life this shouldn’t impose too much strain on your osteoarthritis. I will go into this in more detail in a separate blog.
+
+    I’ve also read that slow running, a Japanese idea puts less strain on your joints. Again, I will go into more detail in another blog. I will try and put slow running into action and will report back.
+
+    I have read, been given advice by both medical and non-medical people and I will try each and every recomendation to see what merits improvement for me and write a balanced blog for each one.  Always open to suggestions too.
+
+    Before I start to run I need to get some weight off.  I have had some success already and lost 7lb.  Not much I know and need to lose another 12 lbs to get back to the weight I was before I was diagnosed with hip OsteoArthritus.  Again I will blog regularly about this and whatever is on my mind regarding weight loss at the time.
+
+    My next blog will be on supplements and what I have found best to do recently, and the inspiration behind it.  May be an eye opener to some, it was to me.  I have a great example to share.
+
+    That’s it for now.
+
+- date: 2026-10-23
   title: Supplements
   slug: supplements
   body: |
     I’ve given up all supplements.  Why?
 
-- date: 2026-10-05
-  title: The First Week Back
-  slug: the-first-week-back
-  body: |
-    Week one is in the books. Three runs, twenty minutes each, and a pair of
-    calves that have Opinions about it all.
-
-    The biggest surprise was how much of the battle is mental. Sed do eiusmod
-    tempor incididunt ut labore et dolore magna aliqua. The body catches up
-    faster than the head does, and the head needs the reminder most.
+    Blog post coming soon
