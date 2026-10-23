@@ -844,6 +844,37 @@ p {
   }
 }
 
+/* 10. Wide screens --------------------------------------------------------
+   On a big monitor the headings and page furniture sit in the middle of the
+   page, while the running text stays left-aligned — centred paragraphs are
+   hard to read. Nothing here applies to phones or tablets. */
+@media (min-width: 900px) {
+  .hero {
+    text-align: center;
+  }
+  .hero .intro {
+    margin-inline: auto;
+    text-align: left;
+  }
+  .hero-actions {
+    justify-content: center;
+  }
+
+  .page-head {
+    text-align: center;
+  }
+  .page-head p {
+    margin-inline: auto;
+  }
+
+  .post-header h1 {
+    text-align: center;
+  }
+  .post-header .post-meta {
+    justify-content: center;
+  }
+}
+
 @media print {
   .site-header,
   .site-footer,
