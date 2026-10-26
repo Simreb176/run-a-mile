@@ -33,6 +33,7 @@ gratuitously replace it.
 | `Makefile` | `make deploy` runs the editing page as a service; also `build`, `preview`, `status`, `logs` | Yes |
 | `deploy/runamile-editor.service` | The systemd unit for the editing page | Yes |
 | `docs/` | The **generated** output. Never hand-edit; it is overwritten on build | No (generated) |
+| `brand/` | The logo exported from the site's mark (SVG + PNGs), for use off-site | Yes — assets |
 | `.github/workflows/pages.yml` | Builds and publishes on push to `main` | No |
 | `CNAME` | `runamile.co.uk` — binds the GitHub Pages site to the domain | No |
 | `EDITING.md` | The plain-English guide written **for the owner** | Keep in sync |
