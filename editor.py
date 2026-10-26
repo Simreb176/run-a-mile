@@ -28,6 +28,7 @@ Only this script needs them — the website build itself uses `requirements.txt`
 """
 from __future__ import annotations
 
+import io
 import os
 import re
 import secrets
@@ -36,6 +37,7 @@ import subprocess
 import sys
 import textwrap
 import time
+import zipfile
 from datetime import date
 from io import StringIO
 from pathlib import Path
@@ -43,6 +45,7 @@ from pathlib import Path
 from flask import (
     Flask,
     flash,
+    send_file,
     redirect,
     render_template,
     request,
@@ -376,6 +379,29 @@ def free_slug(candidate, taken):
     return slug
 
 
+# --------------------------------------------------------------------------
+# The logo files (brand/) — so they can be picked up on a phone
+# --------------------------------------------------------------------------
+BRAND = ROOT / "brand"
+LOGO_NOTES = {
+    "logo-square-1024.png": "Full orange square — best for Instagram or Facebook profile pictures",
+    "logo-1024.png": "Rounded corners, see-through edges — websites, documents, email signatures",
+    "logo-512.png": "The same, smaller — app icons and slides",
+    "logo-192.png": "Small icon size",
+    "logo-32.png": "Browser tab size",
+    "logo.svg": "The original vector — scales to any size, for print or a designer",
+    "logo-square.svg": "Vector, full square — for a designer or a printer",
+}
+
+
+def human_size(size):
+    if size >= 1_000_000:
+        return f"{size / 1_000_000:.1f} MB"
+    if size >= 1000:
+        return f"{size / 1000:.0f} kB"
+    return f"{size} bytes"
+
+
 
 
 # --------------------------------------------------------------------------
@@ -639,6 +665,45 @@ def do_publish():
 @app.get("/preview")
 def preview():
     return redirect(ensure_preview())
+
+
+# --- the logo files -------------------------------------------------------
+@app.get("/logo")
+def logo():
+    files = []
+    for path in sorted(BRAND.glob("*")):
+        if path.suffix.lower() not in {".png", ".svg"}:
+            continue
+        files.append(
+            {
+                "name": path.name,
+                "note": LOGO_NOTES.get(path.name, ""),
+                "size": human_size(path.stat().st_size),
+            }
+        )
+    return render_template("logo.html", files=files, page="logo")
+
+
+@app.get("/logo/<name>")
+def logo_file(name):
+    path = BRAND / name
+    if not path.is_file() or path.suffix.lower() not in {".png", ".svg"}:
+        flash("That file isn't there any more.", "warn")
+        return redirect(url_for("logo"))
+    return send_file(path, as_attachment="download" in request.args,
+                     download_name=name)
+
+
+@app.get("/logo.zip")
+def logo_zip():
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as bundle:
+        for path in sorted(BRAND.glob("*")):
+            if path.suffix.lower() in {".png", ".svg"}:
+                bundle.write(path, arcname=f"Run A Mile logo/{path.name}")
+    buf.seek(0)
+    return send_file(buf, mimetype="application/zip", as_attachment=True,
+                     download_name="run-a-mile-logo.zip")
 
 
 if __name__ == "__main__":

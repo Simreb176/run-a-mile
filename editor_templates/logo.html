@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Logo files &middot; Edit runamile.co.uk{% endblock %}
+
+{% block content %}
+<p class="howto">
+  The orange square from the top of the website, as image files.
+  Tap <strong>Download</strong> on any of them, then save it or attach it to an email from your
+  usual mail app. They're also on this computer in <em>Pictures / Run A Mile logo</em>.
+</p>
+
+<div class="section-head">
+  <h2 class="heading">Logo files</h2>
+  <a class="btn primary small" href="{{ url_for('logo_zip') }}">Download all (zip)</a>
+</div>
+
+<div class="post-list">
+  {% for file in files %}
+  <div class="post-item">
+    <div class="logo-thumb"><img src="{{ url_for('logo_file', name=file.name) }}" alt=""></div>
+    <div class="body">
+      <h3>{{ file.name }}</h3>
+      <p class="excerpt">{{ file.note }}</p>
+      <time>{{ file.size }}</time>
+    </div>
+    <div class="actions">
+      <a class="btn ghost small" href="{{ url_for('logo_file', name=file.name, download=1) }}">Download</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

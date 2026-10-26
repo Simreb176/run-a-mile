@@ -15,6 +15,7 @@
     <nav class="site" aria-label="Editing pages">
       <a href="{{ url_for('home') }}" {% if page == 'site' %}aria-current="page"{% endif %}>Your site</a>
       <a href="{{ url_for('posts') }}" {% if page == 'posts' %}aria-current="page"{% endif %}>Blog posts</a>
+      <a href="{{ url_for('logo') }}" {% if page == 'logo' %}aria-current="page"{% endif %}>Logo files</a>
       <a href="{{ url_for('preview') }}" target="_blank" rel="noopener">Preview</a>
       <a href="{{ live_url }}" target="_blank" rel="noopener">Live site</a>
     </nav>
