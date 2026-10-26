@@ -844,67 +844,6 @@ p {
   }
 }
 
-/* Sharing a post */
-.share {
-  margin-top: 40px;
-  padding: 22px 24px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
-}
-.share h2 {
-  margin: 0 0 14px;
-  font-size: 1.02rem;
-}
-.share-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.share-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
-  padding: 10px 16px;
-  border-radius: 999px;
-  border: 1px solid var(--line-strong);
-  background: var(--bg-alt);
-  color: var(--ink);
-  cursor: pointer;
-  text-decoration: none;
-}
-.share-btn:hover {
-  background: var(--surface-2);
-  border-color: var(--accent);
-  color: var(--accent-strong);
-  text-decoration: none;
-}
-.share-btn:disabled {
-  opacity: 0.65;
-  cursor: default;
-}
-.share-icon {
-  display: grid;
-  place-items: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--accent);
-  color: #fff;
-  font-size: 0.72rem;
-  font-weight: 700;
-  line-height: 1;
-}
-.share-hint {
-  margin: 12px 0 0;
-  font-size: 0.86rem;
-  color: var(--muted);
-}
-
 /* 10. Wide screens --------------------------------------------------------
    On a big monitor the headings and page furniture sit in the middle of the
    page, while the running text stays left-aligned — centred paragraphs are
