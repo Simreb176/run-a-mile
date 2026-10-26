@@ -24,6 +24,83 @@
       {{ post.body | markdown }}
     </div>
 
+    {% set post_url = site.url ~ '/posts/' ~ post.slug ~ '/' %}
+    <section class="share" aria-labelledby="share-heading">
+      <h2 id="share-heading">Share this post</h2>
+      <div class="share-actions">
+        <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u={{ post_url | urlencode }}"
+           target="_blank" rel="noopener">
+          <span class="share-icon" aria-hidden="true">f</span> Facebook
+        </a>
+        <button class="share-btn" type="button" data-share
+                data-title="{{ post.title }}" data-text="{{ post.excerpt }}" data-url="{{ post_url }}">
+          <span class="share-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor"
+                 stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v11"/><path d="M7.5 9.5 12 14l4.5-4.5"/><path d="M5 19h14"/>
+            </svg>
+          </span> <span class="share-label">Share&hellip;</span>
+        </button>
+        <button class="share-btn" type="button" data-copy data-url="{{ post_url }}">
+          <span class="share-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor"
+                 stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="11" height="11" rx="2.5"/>
+              <path d="M5.5 15.5V6a2.5 2.5 0 0 1 2.5-2.5h9"/>
+            </svg>
+          </span> <span class="share-label">Copy link</span>
+        </button>
+      </div>
+      <p class="share-hint">
+        On a phone, <strong>Share&hellip;</strong> opens your phone's own share menu — pick Instagram
+        to post it to a story, or copy the link for your bio. Facebook shows the title and the
+        first line of the post automatically.
+      </p>
+    </section>
+
+    <script>
+    (function () {
+      const share = document.querySelector('[data-share]');
+      const copy = document.querySelector('[data-copy]');
+
+      function say(button, message) {
+        const label = button.querySelector('.share-label');
+        if (!label) return;
+        const original = label.textContent;
+        label.textContent = message;
+        button.disabled = true;
+        setTimeout(() => { label.textContent = original; button.disabled = false; }, 2000);
+      }
+
+      if (share) {
+        share.addEventListener('click', async () => {
+          const data = { title: share.dataset.title, text: share.dataset.text, url: share.dataset.url };
+          if (navigator.share) {
+            try { await navigator.share(data); } catch (error) { /* he changed his mind */ }
+          } else {
+            try {
+              await navigator.clipboard.writeText(data.url);
+              say(share, 'Link copied');
+            } catch (error) {
+              window.prompt('Copy this link:', data.url);
+            }
+          }
+        });
+      }
+
+      if (copy) {
+        copy.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(copy.dataset.url);
+            say(copy, 'Copied');
+          } catch (error) {
+            window.prompt('Copy this link:', copy.dataset.url);
+          }
+        });
+      }
+    })();
+    </script>
+
     <nav class="post-nav" aria-label="More posts">
       {% if newer %}
       <a class="newer" href="{{ base }}posts/{{ newer.slug }}/">&larr; {{ newer.title }}</a>
