@@ -89,6 +89,12 @@
       </div>
     </div>
 
+    {% if site.footer_box %}
+    <div class="wrap footer-box">
+      {{ site.footer_box | markdown }}
+    </div>
+    {% endif %}
+
     <div class="wrap footer-legal">
       <span>&copy; {{ year }} {{ site.author.name }}. All rights reserved.</span>
       <span>Made in {{ site.author.location }}{% if site.footer_note %} &middot; {{ site.footer_note }}{% endif %}</span>

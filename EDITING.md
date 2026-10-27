@@ -66,7 +66,7 @@ line up belong together. When in doubt, copy the shape of the block above.
 | `data/training.yml` | Your running log — one entry per run |
 | `data/profile.yml` | The home page: name, tagline, story, goal and stats |
 | `data/about.yml` | The About page: its own title, subtitle, story and location |
-| `data/site.yml` | The site title, description, the footer line, contact email and social links |
+| `data/site.yml` | The site title, description, the footer line and box, contact email and social links |
 
 ## Writing, editing and deleting a blog post
 

@@ -115,6 +115,12 @@
         <input type="text" id="site_description" name="site_description" value="{{ view.site.description or '' }}">
       </div>
       <div class="field">
+        <label for="site_footer_box">The box at the bottom of every page</label>
+        <textarea id="site_footer_box" name="site_footer_box"
+                  placeholder="Optional — leave it empty and no box appears.">{{ view.site.footer_box or '' }}</textarea>
+        <div class="small">Sits in the middle, above "All rights reserved". Markdown works, so [links](https://example.com) are fine.</div>
+      </div>
+      <div class="field">
         <label for="site_footer_note">The line at the bottom of every page</label>
         <input type="text" id="site_footer_note" name="site_footer_note" value="{{ view.site.footer_note or '' }}">
         <div class="small">It comes after "Made in {{ view.site.author.location }} ·". Leave it empty to drop that part.</div>

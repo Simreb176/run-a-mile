@@ -8,6 +8,10 @@ description: One man's return to running — the story, the training log, and th
 # The line at the bottom of every page, after "Made in <location> ·".
 footer_note: one run/walk at a time.
 
+# An optional box of words at the bottom of every page, above the legal line.
+# Markdown works, so [links](https://example.com) are fine. Empty = hidden.
+footer_box:
+
 # The public URL once the custom domain is attached (runamile.co.uk).
 # Used for SEO tags and sharing cards.
 url: https://runamile.co.uk

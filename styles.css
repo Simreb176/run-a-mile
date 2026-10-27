@@ -760,6 +760,25 @@ p {
 .footer-col a:hover {
   color: var(--accent-strong);
 }
+.footer-box {
+  max-width: 60ch;
+  margin: 34px auto 0;
+  padding: 18px 24px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.footer-box p + p {
+  margin-top: 10px;
+}
+.footer-box a {
+  color: var(--accent-strong);
+}
+
 .footer-legal {
   margin-top: 34px;
   padding-top: 20px;

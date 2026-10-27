@@ -242,6 +242,7 @@ def save_site(form):
     set_value(site, "title", normalise(form.get("site_title")).strip())
     set_value(site, "description", normalise(form.get("site_description")).strip())
     set_value(site, "footer_note", normalise(form.get("site_footer_note")).strip())
+    set_value(site, "footer_box", normalise(form.get("site_footer_box")).strip() or None)
     set_value(site, "url", normalise(form.get("site_url")).strip())
 
     author = site.get("author") or {}
