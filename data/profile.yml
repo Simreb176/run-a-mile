@@ -8,7 +8,7 @@ location: Bradford area, UK
 # The small line above your name on the home page.
 eyebrow: A running journey
 
-# Shown on the home page hero and the about page.
+# Shown on the home page hero. (The About page has its own words in about.yml.)
 intro: |2
     When you mention running to some, they would literally “run a mile” not to
     run.

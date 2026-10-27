@@ -38,7 +38,8 @@ Everything is driven by the files in `data/`:
 | File            | What it controls                                              |
 |-----------------|---------------------------------------------------------------|
 | `site.yml`      | Site title, description, contact email, social links, SEO text |
-| `profile.yml`   | Who you are, your goal, and the quick stats on the home page   |
+| `profile.yml`   | The home page: name, tagline, story, goal and quick stats     |
+| `about.yml`     | The About page: its own title, subtitle, story and location   |
 | `posts.yml`     | The blog posts (newest at the top)                            |
 | `training.yml`  | The running log (one line per run)                            |
 

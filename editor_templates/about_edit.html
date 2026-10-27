@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}About page &middot; Edit runamile.co.uk{% endblock %}
+
+{% block content %}
+<p class="howto">
+  These are the words on the <strong>About</strong> page only. The home page has its own wording —
+  changing one here never changes the other. Press <strong>Save</strong> to see it in the preview,
+  then <strong>Publish</strong> when you're happy.
+</p>
+
+<form method="post" action="{{ url_for('about_save') }}">
+  <div class="card">
+    <div class="field">
+      <label for="eyebrow">The small line above the title</label>
+      <input type="text" id="eyebrow" name="eyebrow" value="{{ about.eyebrow or '' }}">
+    </div>
+    <div class="field">
+      <label for="heading">The title</label>
+      <input type="text" id="heading" name="heading" value="{{ about.heading or '' }}">
+    </div>
+    <div class="field">
+      <label for="subtitle">The line under the title</label>
+      <input type="text" id="subtitle" name="subtitle" value="{{ about.subtitle or '' }}">
+    </div>
+    <div class="field">
+      <label for="location">Where you're based</label>
+      <input type="text" id="location" name="location" value="{{ about.location or '' }}">
+      <div class="small">Shown in the "Based" line under the story.</div>
+    </div>
+    <div class="field">
+      <label for="story">The story</label>
+      <textarea class="prose" id="story" name="story">{{ about.story or '' }}</textarea>
+      <div class="small">
+        Blank line between paragraphs. **bold**, *italic*, [links](https://example.com),
+        ## a smaller heading, - a bullet list and &gt; a quote all work.
+      </div>
+    </div>
+  </div>
+
+  <div class="bar">
+    <div class="inner">
+      <button class="btn publish" type="submit">Save</button>
+      <a class="preview" href="{{ url_for('preview') }}" target="_blank" rel="noopener">See the preview &rarr;</a>
+    </div>
+  </div>
+</form>
+{% endblock %}

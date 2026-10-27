@@ -697,6 +697,7 @@ p {
 /* About page */
 .about-intro {
   max-width: var(--wrap-narrow);
+  margin-inline: auto;
 }
 .fact-list {
   list-style: none;

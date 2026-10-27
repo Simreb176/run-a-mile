@@ -22,7 +22,7 @@ gratuitously replace it.
 
 | Path | What it is | You edit it? |
 |------|-----------|--------------|
-| `data/*.yml` | All the content (posts, runs, profile, site settings) | Yes — for content |
+| `data/*.yml` | All the content (posts, runs, profile, about, site settings) | Yes — for content |
 | `templates/*.html` | Jinja2 layouts: `base` (chrome), `index`, `blog`, `log`, `post`, `about`, `_macros` (shared bits) | Yes — for layout |
 | `styles.css` | All the styling. Section 1 holds every colour/type token | Yes — for appearance |
 | `generate.py` | Reads YAML + templates, writes `docs/` | Only when adding pages/features |
@@ -76,6 +76,9 @@ words on the site:
   do — and vice versa. Its screens live in `editor_templates/` with their own
   stylesheet in `editor_static/` (keep website templates out of those folders
   and the editor's out of `templates/`).
+- The **About page** has its own screen (`/about`) writing `data/about.yml`, so its
+  words are independent of the home page's. The **home page** wording lives on the
+  main screen's "Home page" tab (`data/profile.yml`).
 - Blog posts have their own screen (`/posts`): list, **Write a new post**,
   **Edit**, **Delete**. The main screen covers details, goal, runs and site
   settings only — don't move posts back into the one big form, the owner asked
@@ -193,7 +196,9 @@ He is the ideas person; you are the hands. Keep these habits:
 - **Add a post** → new block at the top of `data/posts.yml`
   (`date`, `title`, `slug`, `body`). Markdown works in `body`.
 - **Log a run** → new entry at the top of `data/training.yml`.
-- **Change name/tagline/intro/goal/stats** → `data/profile.yml`.
+- **Change name/tagline/intro/goal/stats** → `data/profile.yml` (home page).
+- **Change the About page** → `data/about.yml` — deliberately separate from the
+  home page, so the two can say different things (the owner asked for that).
 - **Change title, description, email, social links** → `data/site.yml`.
 - **Change colours, fonts, spacing** → `styles.css`, section 1 (the tokens).
 - **Change the header, footer, or nav** → `templates/base.html`.

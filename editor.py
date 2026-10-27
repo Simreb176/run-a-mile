@@ -676,6 +676,39 @@ def preview():
     return redirect(ensure_preview())
 
 
+# --- the About page's words: separate from the home page -------------------
+@app.get("/about")
+def about_page():
+    return render_template("about_edit.html", about=load(DATA / "about.yml"), page="about")
+
+
+@app.post("/about/save")
+def about_save():
+    form = request.form
+    heading = normalise(form.get("heading")).strip()
+    if not heading:
+        flash("The About page needs a title — nothing was saved.", "bad")
+        return redirect(url_for("about_page"))
+
+    doc = load(DATA / "about.yml")
+    set_value(doc, "eyebrow", normalise(form.get("eyebrow")).strip())
+    set_value(doc, "heading", heading)
+    set_value(doc, "subtitle", normalise(form.get("subtitle")).strip())
+    set_value(doc, "location", normalise(form.get("location")).strip())
+
+    story = normalise(form.get("story")).strip("\n")
+    if not same(doc.get("story"), story):
+        doc["story"] = LiteralScalarString(fmt_block(story, 2) + "\n") if story.strip() else ""
+
+    dump(DATA / "about.yml", doc)
+    ok, output = rebuild()
+    if ok:
+        flash("Saved. Have a look at the preview.", "good")
+    else:
+        flash(f"Saved, but the site didn't rebuild:\n\n{output}", "bad")
+    return redirect(url_for("about_page"))
+
+
 # --- the logo files -------------------------------------------------------
 @app.get("/logo")
 def logo():

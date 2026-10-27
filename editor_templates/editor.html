@@ -12,7 +12,7 @@
 <form method="post" action="{{ url_for('do_save') }}">
 
   <nav class="tabs" role="tablist" aria-label="Sections">
-    <button type="button" role="tab" data-tab="details" aria-selected="true">Your details</button>
+    <button type="button" role="tab" data-tab="details" aria-selected="true">Home page</button>
     <button type="button" role="tab" data-tab="goal" aria-selected="false">Goal &amp; numbers</button>
     <button type="button" role="tab" data-tab="runs" aria-selected="false">Run log ({{ view.training|length }})</button>
     <button type="button" role="tab" data-tab="site" aria-selected="false">Site settings</button>
@@ -20,10 +20,10 @@
 
   <!-- 1. Your details -------------------------------------------------- -->
   <section class="panel on" id="panel-details" role="tabpanel">
-    <h2>Your details</h2>
-    <p class="hint">These words appear at the top of the home page and all over the About page.
-      The line at the bottom of every page is on
-      <a href="#" data-goto="site">Site settings</a>.</p>
+    <h2>Home page</h2>
+    <p class="hint">These words appear at the top of the home page. The About page has its own
+      wording on <a href="{{ url_for('about_page') }}">the About page</a>, and the line at the
+      bottom of every page is on <a href="#" data-goto="site">Site settings</a>.</p>
     <div class="card">
       <div class="field">
         <label for="profile_eyebrow">The small line above your name</label>

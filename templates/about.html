@@ -1,45 +1,47 @@
 {% extends "base.html" %}
 {% from "_macros.html" import goal_card %}
-{% block title %}About &middot; {{ site.title }}{% endblock %}
-{% block description %}Who's behind {{ site.title }} and why they're running.{% endblock %}
+{% block title %}{{ about.heading }} &middot; {{ site.title }}{% endblock %}
+{% block description %}{{ about.subtitle }}{% endblock %}
 {% block og_path %}about.html{% endblock %}
 {% block canonical_path %}about.html{% endblock %}
 
 {% block content %}
 <div class="wrap">
   <header class="page-head">
-    <p class="eyebrow">About</p>
-    <h1>{{ profile.name }}</h1>
-    <p class="tagline">{{ profile.tagline }}</p>
+    <p class="eyebrow">{{ about.eyebrow }}</p>
+    <h1>{{ about.heading }}</h1>
+    {% if about.subtitle %}<p class="tagline">{{ about.subtitle }}</p>{% endif %}
   </header>
 
-  <section class="about-intro">
-    <div class="prose">{{ profile.intro | markdown }}</div>
+  <div class="about-intro">
+    <section>
+      <div class="prose">{{ about.story | markdown }}</div>
 
-    <ul class="fact-list">
-      {% if profile.location %}
-      <li><span class="fact-key">Based</span><span>{{ profile.location }}</span></li>
-      {% endif %}
-      {% if profile.goal %}
-      <li><span class="fact-key">Goal</span><span>{{ profile.goal.label }} &mdash; {{ profile.goal.progress }}% of the way there</span></li>
-      {% endif %}
-      {% if site.author.email %}
-      <li><span class="fact-key">Contact</span><span><a href="mailto:{{ site.author.email }}">{{ site.author.email }}</a></span></li>
-      {% endif %}
-    </ul>
-  </section>
+      <ul class="fact-list">
+        {% if about.location %}
+        <li><span class="fact-key">Based</span><span>{{ about.location }}</span></li>
+        {% endif %}
+        {% if profile.goal %}
+        <li><span class="fact-key">Goal</span><span>{{ profile.goal.label }} &mdash; {{ profile.goal.progress }}% of the way there</span></li>
+        {% endif %}
+        {% if site.author.email %}
+        <li><span class="fact-key">Contact</span><span><a href="mailto:{{ site.author.email }}">{{ site.author.email }}</a></span></li>
+        {% endif %}
+      </ul>
+    </section>
 
-  {% if profile.goal %}
-  {{ goal_card(profile.goal) }}
-  {% endif %}
+    {% if profile.goal %}
+    {{ goal_card(profile.goal) }}
+    {% endif %}
 
-  {% if social_links %}
-  <section class="section">
-    <div class="section-head"><h2>Follow along</h2></div>
-    <p class="lede">
-      {% for link in social_links %}{% if not loop.first %} &middot; {% endif %}<a href="{{ link.url }}">{{ link.name }}</a>{% endfor %}
-    </p>
-  </section>
-  {% endif %}
+    {% if social_links %}
+    <section>
+      <div class="section-head"><h2>Follow along</h2></div>
+      <p class="lede">
+        {% for link in social_links %}{% if not loop.first %} &middot; {% endif %}<a href="{{ link.url }}">{{ link.name }}</a>{% endfor %}
+      </p>
+    </section>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

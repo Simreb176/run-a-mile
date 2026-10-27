@@ -64,7 +64,8 @@ line up belong together. When in doubt, copy the shape of the block above.
 |------|---------------|
 | `data/posts.yml` | Your blog posts (newest at the top) |
 | `data/training.yml` | Your running log — one entry per run |
-| `data/profile.yml` | Your name, tagline, story, goal and home-page stats |
+| `data/profile.yml` | The home page: name, tagline, story, goal and stats |
+| `data/about.yml` | The About page: its own title, subtitle, story and location |
 | `data/site.yml` | The site title, description, the footer line, contact email and social links |
 
 ## Writing, editing and deleting a blog post
@@ -129,8 +130,9 @@ Add one entry at the top of `data/training.yml`:
 Open `data/profile.yml`:
 
 - **`name`**, **`tagline`**, **`location`** and **`intro`** are the words at the
-  top of the home page and the whole About page. **`eyebrow`** is the small line
-  just above your name on the home page.
+  top of the **home page**. **`eyebrow`** is the small line just above your name.
+- The **About page** has its own words in `data/about.yml`, so the two pages can
+  say different things.
 - **`goal`** drives the progress bar. `progress` is a percentage from 0 to 100 —
   nudge it up as you get closer.
 - **`stats`** is the row of numbers on the home page. Edit the values or add

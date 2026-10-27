@@ -96,6 +96,7 @@ def write(path, text):
 def main():
     site = load_yaml(DATA / "site.yml")
     profile = load_yaml(DATA / "profile.yml")
+    about = load_yaml(DATA / "about.yml")
     posts = load_posts()
     training = sorted(
         load_yaml(DATA / "training.yml"),
@@ -109,6 +110,7 @@ def main():
     context = {
         "site": site,
         "profile": profile,
+        "about": about,
         "posts": posts,
         "training": training,
         "social_links": [
