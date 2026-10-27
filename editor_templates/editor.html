@@ -129,6 +129,38 @@
       </div>
     </div>
     <div class="card">
+      <h3>The blog page</h3>
+      <div class="field">
+        <label for="blog_eyebrow">The small line above the title</label>
+        <input type="text" id="blog_eyebrow" name="blog_eyebrow" value="{{ view.site.blog.eyebrow or '' }}">
+      </div>
+      <div class="field">
+        <label for="blog_heading">The title</label>
+        <input type="text" id="blog_heading" name="blog_heading" value="{{ view.site.blog.heading or '' }}">
+      </div>
+      <div class="field">
+        <label for="blog_intro">The line under the title</label>
+        <input type="text" id="blog_intro" name="blog_intro" value="{{ view.site.blog.intro or '' }}">
+        <div class="small">A link goes in square brackets, like [the training log](log.html).</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>The training log page</h3>
+      <div class="field">
+        <label for="log_eyebrow">The small line above the title</label>
+        <input type="text" id="log_eyebrow" name="log_eyebrow" value="{{ view.site.log.eyebrow or '' }}">
+      </div>
+      <div class="field">
+        <label for="log_heading">The title</label>
+        <input type="text" id="log_heading" name="log_heading" value="{{ view.site.log.heading or '' }}">
+      </div>
+      <div class="field">
+        <label for="log_intro">The line under the title</label>
+        <input type="text" id="log_intro" name="log_intro" value="{{ view.site.log.intro or '' }}">
+        <div class="small">A link goes in square brackets, like [the blog](blog.html).</div>
+      </div>
+    </div>
+    <div class="card">
       <h3>About the author</h3>
       <div class="grid two">
         <div class="field">

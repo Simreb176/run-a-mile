@@ -8,10 +8,9 @@
 {% block content %}
 <div class="wrap">
   <header class="page-head">
-    <p class="eyebrow">The full story</p>
-    <h1>The blog</h1>
-    <p>Every post I've written, newest first. The day-to-day miles live in the
-      <a href="{{ base }}log.html">training log</a>.</p>
+    <p class="eyebrow">{{ site.blog.eyebrow }}</p>
+    <h1>{{ site.blog.heading }}</h1>
+    {{ site.blog.intro | markdown }}
   </header>
 
   <section aria-labelledby="posts-heading">

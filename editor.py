@@ -255,6 +255,15 @@ def save_site(form):
         value = normalise(form.get(f"social_{network}")).strip()
         set_value(social, network, value or None)
 
+    for page in ("blog", "log"):
+        block = site.get(page)
+        if not isinstance(block, dict):
+            block = {}
+            site[page] = block
+        set_value(block, "eyebrow", normalise(form.get(f"{page}_eyebrow")).strip())
+        set_value(block, "heading", normalise(form.get(f"{page}_heading")).strip())
+        set_value(block, "intro", normalise(form.get(f"{page}_intro")).strip())
+
     seo = site.get("seo") or {}
     set_value(seo, "description", normalise(form.get("seo_description")).strip())
 

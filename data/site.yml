@@ -25,6 +25,17 @@ social:
   facebook: https://www.facebook.com/profile.php?id=61595342308648
   strava: https://www.strava.com/athletes/7177270
 
+# The words at the top of the blog and log pages.
+# The line under each title can hold a link, written like [the training log](log.html).
+blog:
+  eyebrow: The full story
+  heading: The blog
+  intro: "Every post I've written, newest first. The day-to-day miles live in the [training log](log.html)."
+log:
+  eyebrow: Miles in the bank
+  heading: Training log
+  intro: "Every run I've logged, newest first. The thinking behind them is in the [blog](blog.html)."
+
 # Search engine / sharing description. Update this when the story changes.
 seo:
   description: "A blog and training log documenting a return to running — from the first hesitant run to the first mile."
