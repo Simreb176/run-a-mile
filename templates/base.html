@@ -18,7 +18,7 @@
 
   <link rel="icon" type="image/svg+xml" href="{{ base }}favicon.svg">
   <link rel="canonical" href="{{ site.url }}/{% block canonical_path %}{% endblock %}">
-  <link rel="stylesheet" href="{{ base }}styles.css">
+  <link rel="stylesheet" href="{{ base }}styles.css?v={{ asset_version }}">
   {% block head %}{% endblock %}
 </head>
 <body>

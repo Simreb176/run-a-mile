@@ -11,6 +11,7 @@ and review, but the live copy at runamile.co.uk is built fresh in GitHub
 Actions on every push to `main` (see `.github/workflows/pages.yml`).
 Run this script after editing data or templates, then commit the changes.
 """
+import hashlib
 from datetime import datetime
 from pathlib import Path
 
@@ -55,6 +56,14 @@ SOCIAL_LINKS = [
 def load_yaml(path):
     with open(path) as f:
         return yaml.safe_load(f) or []
+
+
+def asset_version(name):
+    """A short fingerprint of a file, so a changed stylesheet is never served
+    from a browser's cache. (Without this, a phone can keep the old CSS for
+    ten minutes and the site looks broken in the meantime.)"""
+    path = ROOT / name
+    return hashlib.sha1(path.read_bytes()).hexdigest()[:8] if path.exists() else ""
 
 
 def render_markdown(text):
@@ -119,6 +128,7 @@ def main():
             if (site.get("social") or {}).get(key)
         ],
         "year": datetime.now().year,
+        "asset_version": asset_version("styles.css"),
     }
 
     # Start each build from a clean slate, keeping only the files we must keep.
